@@ -31,6 +31,4 @@ namespace DoctorAppointmentsAPI.Repositories
         public async Task UpdateAppointment(Appointments appointment)
             => await UpdateAsync(appointment);
     }
-    {
-    }
 }

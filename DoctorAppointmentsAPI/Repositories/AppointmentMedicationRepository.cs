@@ -11,7 +11,7 @@ namespace DoctorAppointmentsAPI.Repositories
         }
 
         public async Task CreateAppointmentMedication(AppointmentMedications appointmentMedication)
-            => await CreateAsync(appointmentMedication);;
+            => await CreateAsync(appointmentMedication);
 
         public async Task DeleteAppointmentMedication(AppointmentMedications appointmentMedication)
             => await DeleteAsync(appointmentMedication);
