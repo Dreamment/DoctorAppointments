@@ -17,5 +17,12 @@ namespace DoctorAppointmentsAPI.Repositories
         public DbSet<DoctorSpecialties> DoctorSpecialties { get; set; }
         public DbSet<FamilyDoctorChanges> FamilyDoctorChanges { get; set; }
         public DbSet<AppointmentMedications> AppointmentsMedications { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Appointments>()
+                .HasIndex(a => a.AppointmentCode)
+                .IsUnique();
+        }
     }
 }

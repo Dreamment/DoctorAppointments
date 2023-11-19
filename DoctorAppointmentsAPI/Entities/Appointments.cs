@@ -21,6 +21,9 @@ namespace DoctorAppointmentsDomain.Entities
 
         public bool? Status { get; set; }
 
+        [Required]        
+        public string AppointmentCode { get; set; }
+
         [Required]
         public virtual Patients Patient { get; set; }
 
