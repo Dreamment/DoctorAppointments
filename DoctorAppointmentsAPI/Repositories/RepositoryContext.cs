@@ -26,6 +26,10 @@ namespace DoctorAppointmentsAPI.Repositories
                 .HasIndex(a => a.AppointmentCode)
                 .IsUnique();
 
+            modelBuilder.Entity<Patients>()
+                .Property(p => p.PatientBirthDate)
+                .HasColumnType("date");
+
             modelBuilder.Entity<Appointments>()
                 .HasOne(a => a.Doctor)
                 .WithMany(d => d.Appointments)
