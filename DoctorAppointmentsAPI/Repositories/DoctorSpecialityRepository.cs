@@ -10,10 +10,10 @@ namespace DoctorAppointmentsAPI.Repositories
         {
         }
 
-        public async Task CreateDoctorSpecialty(DoctorSpecialties doctorSpecialty) 
+        public async Task CreateDoctorSpecialtyAsync(DoctorSpecialties doctorSpecialty) 
             => await CreateAsync(doctorSpecialty);
 
-        public async Task DeleteDoctorSpecialty(DoctorSpecialties doctorSpecialty)
+        public async Task DeleteDoctorSpecialtyAsync(DoctorSpecialties doctorSpecialty)
             => await DeleteAsync(doctorSpecialty);
 
         public async Task<IEnumerable<DoctorSpecialties>> GetAllDoctorSpecialtiesAsync(bool trackChanges)
@@ -28,7 +28,7 @@ namespace DoctorAppointmentsAPI.Repositories
             return doctorSpecialties.FirstOrDefault();
         }
 
-        public async Task UpdateDoctorSpecialty(DoctorSpecialties doctorSpecialty)
+        public async Task UpdateDoctorSpecialtyAsync(DoctorSpecialties doctorSpecialty)
             => await UpdateAsync(doctorSpecialty);
     }
 }

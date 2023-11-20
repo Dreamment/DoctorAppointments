@@ -10,10 +10,10 @@ namespace DoctorAppointmentsAPI.Repositories
         {
         }
 
-        public async Task CreateFamilyDoctor(FamilyDoctors familyDoctor)
+        public async Task CreateFamilyDoctorAsync(FamilyDoctors familyDoctor)
             => await CreateAsync(familyDoctor);
 
-        public async Task DeleteFamilyDoctor(FamilyDoctors familyDoctor)
+        public async Task DeleteFamilyDoctorAsync(FamilyDoctors familyDoctor)
             => await DeleteAsync(familyDoctor);
 
         public async Task<IEnumerable<FamilyDoctors>> GetAllFamilyDoctorsAsync(bool trackChanges)
@@ -28,7 +28,7 @@ namespace DoctorAppointmentsAPI.Repositories
         public async Task<IEnumerable<FamilyDoctors>> GetFamilyDoctorsByConditionAsync(Expression<Func<FamilyDoctors, bool>> expression, bool trackChanges)
             => await FindByConditionAsync(expression, trackChanges);
 
-        public Task UpdateFamilyDoctor(FamilyDoctors familyDoctor)
+        public Task UpdateFamilyDoctorAsync(FamilyDoctors familyDoctor)
             => UpdateAsync(familyDoctor);
     }
 }

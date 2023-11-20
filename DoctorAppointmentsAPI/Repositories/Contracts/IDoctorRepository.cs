@@ -8,8 +8,8 @@ namespace DoctorAppointmentsAPI.Repositories.Contracts
         Task<IEnumerable<Doctors>> GetAllDoctorsAsync(bool trackChanges);
         Task<Doctors> GetDoctorByIdAsync(int doctorId, bool trackChanges);
         Task<IEnumerable<Doctors>> GetDoctorsByConditionAsync(Expression<Func<Doctors, bool>> expression, bool trackChanges);
-        Task CreateDoctor(Doctors doctor);
-        Task DeleteDoctor(Doctors doctor);
-        Task UpdateDoctor(Doctors doctor);
+        Task CreateDoctorAsync(Doctors doctor);
+        Task DeleteDoctorAsync(Doctors doctor);
+        Task UpdateDoctorAsync(Doctors doctor);
     }
 }

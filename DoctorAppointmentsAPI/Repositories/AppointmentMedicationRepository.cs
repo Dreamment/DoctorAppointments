@@ -10,10 +10,10 @@ namespace DoctorAppointmentsAPI.Repositories
         {
         }
 
-        public async Task CreateAppointmentMedication(AppointmentMedications appointmentMedication)
+        public async Task CreateAppointmentMedicationAsync(AppointmentMedications appointmentMedication)
             => await CreateAsync(appointmentMedication);
 
-        public async Task DeleteAppointmentMedication(AppointmentMedications appointmentMedication)
+        public async Task DeleteAppointmentMedicationAsync(AppointmentMedications appointmentMedication)
             => await DeleteAsync(appointmentMedication);
 
         public async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedicationsAsync(bool trackChanges)
@@ -28,7 +28,7 @@ namespace DoctorAppointmentsAPI.Repositories
         public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByConditionAsync(Expression<Func<AppointmentMedications, bool>> expression, bool trackChanges)
             => await FindByConditionAsync(expression, trackChanges);
 
-        public async Task UpdateAppointmentMedication(AppointmentMedications appointmentMedication)
+        public async Task UpdateAppointmentMedicationAsync(AppointmentMedications appointmentMedication)
             => await UpdateAsync(appointmentMedication);
     }
 }
