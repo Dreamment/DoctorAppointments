@@ -24,7 +24,7 @@ namespace DoctorAppointmentsAPI.Repositories
 
         public async Task<DoctorSpecialties> GetDoctorSpecialtyByIdAsync(int doctorSpecialtyId, bool trackChanges)
         {
-            var doctorSpecialties = await FindByConditionAsync(d => d.DoctorSpecialtyId.Equals(doctorSpecialtyId), trackChanges);
+            var doctorSpecialties = await FindByConditionAsync(d => d.DoctorSpecialityId.Equals(doctorSpecialtyId), trackChanges);
             return doctorSpecialties.FirstOrDefault();
         }
 

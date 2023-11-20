@@ -5,7 +5,7 @@ namespace DoctorAppointmentsDomain.Entities
     public class DoctorSpecialties
     {
         [Key]
-        public int DoctorSpecialtyId { get; set; }
+        public int DoctorSpecialityId { get; set; }
 
         [Required]
         public string DoctorSpecialtyName { get; set; }

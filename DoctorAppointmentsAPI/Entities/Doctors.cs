@@ -16,10 +16,10 @@ namespace DoctorAppointmentsDomain.Entities
 
         [Required]
         [ForeignKey("DoctorSpeciality")]
-        public string DoctorSpecialityId { get; set; }
+        public int DoctorSpecialityId { get; set; }
 
 
-        public virtual DoctorSpecialties DoctorSpecialty { get; set; }
+        public virtual DoctorSpecialties DoctorSpeciality { get; set; }
         
         public virtual IEnumerable<Appointments> Appointments { get; set; }
     }
