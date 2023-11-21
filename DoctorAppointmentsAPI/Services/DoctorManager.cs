@@ -46,15 +46,20 @@ namespace DoctorAppointmentsAPI.Services
                 p => p.PatientFamilyDoctorId == doctorId, trackChanges);
             if (patients == null)
                 throw new Exception("You don't have any patient");
-            var patientsDto = _mapper.Map<IEnumerable<GetPatientsForFamilyDoctorDto>>(patients);
-            int i = 1;
-            foreach (var patient in patientsDto)
+            IEnumerable<GetPatientsForFamilyDoctorDto> patientsDto = new List<GetPatientsForFamilyDoctorDto>();
+            foreach (var patient in patients)
             {
-                patient.Id = i;
-                i++;
+                var patientDto =new GetPatientsForFamilyDoctorDto 
+                { 
+                    Id = patient.PatientId,
+                    Name = patient.PatientName,
+                    Surname = patient.PatientSurname,
+                    Gender = patient.PatientGender,
+                    BirthDate = DateOnly.FromDateTime(patient.PatientBirthDate).ToString("dd-MM-yyyy")
+                };
+                patientsDto = patientsDto.Append(patientDto);
             }
             return patientsDto;
-
         }
 
         public async Task<IEnumerable<GetAppointmentsForDoctorDto>> GetTodaysAppointmentsAsync(int doctorId, bool trackChanges)
