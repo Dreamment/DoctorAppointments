@@ -1,5 +1,6 @@
 ﻿using DoctorAppointmentsAPI.DataTransferObjects;
 using DoctorAppointmentsAPI.Services.Contracts;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorAppointmentsAPI.Controllers
@@ -47,6 +48,24 @@ namespace DoctorAppointmentsAPI.Controllers
         {
             var medicationId = await _serviceManager.Doctor.CreateMedicationAsync(doctorId, medicationDto, false);
             return CreatedAtRoute("GetMedicationAsync", new { medicationId }, medicationDto);
+        }
+
+        [HttpPatch("ChangeAppointmentStatus/{doctorID:int}/{appointmentCode}", Name = "ChangeAppointmentStatusAsync")]
+        public async Task<IActionResult> ChangeAppointmentStatusAsync([FromRoute(Name = "doctorId")] int doctorId,[FromRoute(Name = "appointmentCode")] string appointmentCode, [FromBody] JsonPatchDocument<PartiallyUpdateAppointmentForDoctorDto> jsonPatch)
+        {
+            if(jsonPatch.Operations.Any(op => op.path.Equals("status", StringComparison.OrdinalIgnoreCase)))
+            {
+                if (jsonPatch.Operations.Count() > 1)
+                    return BadRequest("You can only update the status of the appointment.");
+                var status = jsonPatch.Operations.FirstOrDefault().value.ToString();
+                if (string.Equals(status, "true", StringComparison.OrdinalIgnoreCase) || string.Equals(status, "false", StringComparison.OrdinalIgnoreCase))
+                {
+                    await _serviceManager.Doctor.ChangeAppointmentStatus(doctorId, appointmentCode, jsonPatch, false);
+                    return NoContent();
+                }
+                return BadRequest("The status can only be true or false.");
+            }
+            return BadRequest("You can only update the status of the appointment.");
         }
 
     }

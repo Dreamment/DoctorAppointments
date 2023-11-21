@@ -1,4 +1,5 @@
 ﻿using DoctorAppointmentsAPI.DataTransferObjects;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace DoctorAppointmentsAPI.Services.Contracts
 {
@@ -8,6 +9,6 @@ namespace DoctorAppointmentsAPI.Services.Contracts
         Task<IEnumerable<GetAppointmentsForDoctorDto>> GetTodaysAppointmentsAsync(int doctorId, bool trackChanges);
         Task<IEnumerable<GetAppointmentsForDoctorDto>> GetUpcomingAppointmentsAsync(int doctorId, bool trackChanges);
         Task<int> CreateMedicationAsync(int doctorId, CreateMedicationDto medicationDto, bool trackChanges);
-        Task ChangeAppointmentStatus(int doctorId, string appointmentCode, bool isApproved, bool trackChanges);
+        Task ChangeAppointmentStatus(int doctorId, string appointmentCode, JsonPatchDocument<PartiallyUpdateAppointmentForDoctorDto> jsonPatch, bool trackChanges);
     }
 }

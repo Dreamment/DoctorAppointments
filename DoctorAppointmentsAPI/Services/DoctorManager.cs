@@ -3,6 +3,7 @@ using DoctorAppointmentsAPI.DataTransferObjects;
 using DoctorAppointmentsAPI.Repositories.Contracts;
 using DoctorAppointmentsAPI.Services.Contracts;
 using DoctorAppointmentsAPI.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace DoctorAppointmentsAPI.Services
 {
@@ -17,15 +18,16 @@ namespace DoctorAppointmentsAPI.Services
             _mapper = mapper;
         }
 
-        public async Task ChangeAppointmentStatus(int doctorId, string appointmentCode, bool isApproved, bool trackChanges)
+        public async Task ChangeAppointmentStatus(int doctorId, string appointmentCode, JsonPatchDocument<PartiallyUpdateAppointmentForDoctorDto> jsonPatch, bool trackChanges)
         {
             var appointment = await _repositoryManager.Appointment.GetAppointmentByCodeAsync(appointmentCode, trackChanges);
             if (appointment == null)
                 throw new Exception("Appointment not found");
-            appointment.Status = isApproved;
-            await _repositoryManager.Appointment.UpdateAppointmentAsync(appointment);
+            var appointmentDto = _mapper.Map<PartiallyUpdateAppointmentForDoctorDto>(appointment);
+            jsonPatch.ApplyTo(appointmentDto);
+            var appointmentEntity = _mapper.Map<Appointments>(appointmentDto);
+            await _repositoryManager.Appointment.UpdateAppointmentAsync(appointmentEntity);
             await _repositoryManager.SaveAsync();
-            return;
         }
 
         public async Task<int> CreateMedicationAsync(int doctorId, CreateMedicationDto medicationDto, bool trackChanges)
