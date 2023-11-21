@@ -2,6 +2,8 @@
 {
     public class GetAppointmentsForPatientDto
     {
+        public int id { get; set; }
+
         public string AppointmentCode { get; set; }
 
         public string DoctorName { get; set; }
@@ -14,6 +16,6 @@
 
         public bool? Status { get; set; } // is approved by doctor
 
-        public string ApoointmentType { get; set; } // past or upcoming
+        public string AppointmentType { get; set; } // past or upcoming
     }
 }
