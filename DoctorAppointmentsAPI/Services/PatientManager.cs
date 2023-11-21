@@ -49,6 +49,10 @@ namespace DoctorAppointmentsAPI.Services
                 appointmentsDto.ElementAt(i).AppointmentType = doctorSpecialtiy.DoctorSpecialtyName + " Appointment";
                 appointmentsDto.ElementAt(i).AppointmentDate = DateOnly.FromDateTime(appointments.ElementAt(i).AppointmentDateTime);
                 appointmentsDto.ElementAt(i).AppointmentTime = TimeOnly.FromDateTime(appointments.ElementAt(i).AppointmentDateTime);
+                if (appointments.ElementAt(i).AppointmentDateTime < DateTime.Now)
+                    appointmentsDto.ElementAt(i).AppointmentStatus = "Past";
+                else
+                    appointmentsDto.ElementAt(i).AppointmentStatus = "Upcoming";
             }
             return appointmentsDto;
         }

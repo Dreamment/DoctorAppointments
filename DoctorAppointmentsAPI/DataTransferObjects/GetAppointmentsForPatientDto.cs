@@ -16,6 +16,9 @@
 
         public bool? Status { get; set; } // is approved by doctor
 
-        public string AppointmentType { get; set; } // past or upcoming
+        public string AppointmentType { get; set; }
+
+        //hold past or upcoming
+        public string AppointmentStatus { get; set; }
     }
 }
