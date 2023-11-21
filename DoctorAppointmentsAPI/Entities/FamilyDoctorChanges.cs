@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DoctorAppointmentsDomain.Entities
 {
@@ -8,15 +9,19 @@ namespace DoctorAppointmentsDomain.Entities
         [Key]
         public int ChangeId { get; set; }
 
+        [Required]
         [ForeignKey("Patient")]
         public int PatientId { get; set; }
 
+        [AllowNull]
         [ForeignKey("PreviousFamilyDoctor")]
-        public int PreviousFamilyDoctorId { get; set; }
+        public int? PreviousFamilyDoctorId { get; set; }
 
+        [Required]
         [ForeignKey("NewFamilyDoctor")]
         public int NewFamilyDoctorId { get; set; }
 
+        [Required]
         public DateTime ChangeDate { get; set; }
 
 

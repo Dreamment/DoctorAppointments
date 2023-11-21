@@ -58,7 +58,7 @@ namespace DoctorAppointmentsAPI.Services
             var patient = await _repositoryManager.Patient.GetPatientByIdAsync(patientId, trackChanges);
             if (patient == null)
                 throw new Exception("Patient not found");
-            var familyDoctor = await _repositoryManager.Doctor.GetDoctorByIdAsync(patient.PatientFamilyDoctorId, trackChanges);
+            var familyDoctor = await _repositoryManager.Doctor.GetDoctorByIdAsync((int)patient.PatientFamilyDoctorId, trackChanges);
             if (familyDoctor == null)
                 throw new Exception("Family doctor not found");
             var familyDoctorDto = _mapper.Map<GetFamilyDoctorDto>(familyDoctor);

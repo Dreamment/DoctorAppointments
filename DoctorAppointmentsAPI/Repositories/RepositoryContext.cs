@@ -30,6 +30,14 @@ namespace DoctorAppointmentsAPI.Repositories
                 .Property(p => p.PatientBirthDate)
                 .HasColumnType("date");
 
+            modelBuilder.Entity<FamilyDoctorChanges>()
+                .Property(f => f.PreviousFamilyDoctorId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Patients>()
+                .Property(p => p.PatientFamilyDoctorId)
+                .IsRequired(false);
+
             modelBuilder.Entity<Appointments>()
                 .HasOne(a => a.Doctor)
                 .WithMany(d => d.Appointments)

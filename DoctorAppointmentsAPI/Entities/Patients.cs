@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DoctorAppointmentsDomain.Entities
 {
@@ -20,12 +21,12 @@ namespace DoctorAppointmentsDomain.Entities
         [Required]
         public DateTime PatientBirthDate { get; set; }
 
-        [Required]
+        [AllowNull]
         [ForeignKey("FamilyDoctor")]
-        public int PatientFamilyDoctorId { get; set; }
+        public int? PatientFamilyDoctorId { get; set; }
 
 
-        public virtual FamilyDoctors FamilyDoctor { get; set; }
+        public virtual FamilyDoctors? FamilyDoctor { get; set; }
 
         public virtual IEnumerable<Appointments> Appointments { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DoctorAppointmentsDomain.Entities
 {
@@ -19,6 +20,7 @@ namespace DoctorAppointmentsDomain.Entities
         [Required]
         public DateTime AppointmentDateTime { get; set; }
 
+        [AllowNull]
         public bool? Status { get; set; }
 
         [Required]        
