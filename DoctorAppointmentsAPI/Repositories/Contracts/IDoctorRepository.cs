@@ -1,4 +1,4 @@
-﻿using DoctorAppointmentsDomain.Entities;
+﻿using DoctorAppointmentsAPI.Entities;
 using System.Linq.Expressions;
 
 namespace DoctorAppointmentsAPI.Repositories.Contracts

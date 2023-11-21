@@ -1,4 +1,4 @@
-﻿using DoctorAppointmentsDomain.Entities;
+﻿using DoctorAppointmentsAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorAppointmentsAPI.Repositories

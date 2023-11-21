@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DoctorAppointmentsDomain.Entities
+namespace DoctorAppointmentsAPI.Entities
 {
     public class Patients
     {

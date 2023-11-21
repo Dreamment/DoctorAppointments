@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DoctorAppointmentsDomain.Entities
+namespace DoctorAppointmentsAPI.Entities
 {
     public class DoctorSpecialties
     {

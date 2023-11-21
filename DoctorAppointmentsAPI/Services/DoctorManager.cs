@@ -2,7 +2,7 @@
 using DoctorAppointmentsAPI.DataTransferObjects;
 using DoctorAppointmentsAPI.Repositories.Contracts;
 using DoctorAppointmentsAPI.Services.Contracts;
-using DoctorAppointmentsDomain.Entities;
+using DoctorAppointmentsAPI.Entities;
 
 namespace DoctorAppointmentsAPI.Services
 {

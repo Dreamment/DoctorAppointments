@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DoctorAppointmentsAPI.DataTransferObjects;
-using DoctorAppointmentsDomain.Entities;
+using DoctorAppointmentsAPI.Entities;
 
 namespace DoctorAppointmentsAPI.AutoMapper
 {
