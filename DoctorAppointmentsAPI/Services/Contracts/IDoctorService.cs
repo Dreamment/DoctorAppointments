@@ -1,5 +1,4 @@
 ﻿using DoctorAppointmentsAPI.DataTransferObjects;
-using DoctorAppointmentsDomain.Entities;
 
 namespace DoctorAppointmentsAPI.Services.Contracts
 {

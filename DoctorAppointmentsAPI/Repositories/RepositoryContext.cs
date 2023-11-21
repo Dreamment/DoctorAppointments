@@ -1,7 +1,5 @@
 ﻿using DoctorAppointmentsDomain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DoctorAppointmentsAPI.Repositories
 {

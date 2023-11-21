@@ -1,6 +1,4 @@
-﻿using DoctorAppointmentsDomain.Entities;
-
-namespace DoctorAppointmentsAPI.DataTransferObjects
+﻿namespace DoctorAppointmentsAPI.DataTransferObjects
 {
     public class GetAppointmentsForDoctorDto
     {
