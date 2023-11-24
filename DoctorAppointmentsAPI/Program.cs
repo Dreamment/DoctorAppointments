@@ -1,7 +1,7 @@
-using DoctorAppointmentsAPI.Repositories;
-using DoctorAppointmentsAPI.Repositories.Contracts;
-using DoctorAppointmentsAPI.Services;
-using DoctorAppointmentsAPI.Services.Contracts;
+using Repositories;
+using Repositories.Contracts;
+using Services;
+using Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<RepositoryContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddScoped<IDoctorService, DoctorManager>();
+builder.Services.AddScoped<IPatientService, PatientManager>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
