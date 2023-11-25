@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories;
 
@@ -11,9 +12,10 @@ using Repositories;
 namespace DoctorAppointmentsAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231125113252_RemoveUnnecessaryEntities")]
+    partial class RemoveUnnecessaryEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,86 +26,90 @@ namespace DoctorAppointmentsAPI.Migrations
 
             modelBuilder.Entity("Entities.Models.AppointmentMedications", b =>
                 {
-                    b.Property<string>("MedicationCode")
-                        .HasMaxLength(17)
-                        .HasColumnType("nvarchar(17)");
+                    b.Property<int>("MedicationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("AppointmentCode")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MedicationId"), 1L, 1);
+
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Dosage")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicationName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UsageInstructions")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("MedicationCode");
+                    b.HasKey("MedicationId");
 
-                    b.HasIndex("AppointmentCode");
+                    b.HasIndex("AppointmentId");
 
                     b.ToTable("AppointmentsMedications");
                 });
 
             modelBuilder.Entity("Entities.Models.Appointments", b =>
                 {
+                    b.Property<int>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentId"), 1L, 1);
+
                     b.Property<string>("AppointmentCode")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("AppointmentDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DoctorCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("PatientTCId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
 
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
-                    b.HasKey("AppointmentCode");
+                    b.HasKey("AppointmentId");
 
-                    b.HasIndex("DoctorCode");
+                    b.HasIndex("AppointmentCode")
+                        .IsUnique();
 
-                    b.HasIndex("PatientTCId");
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Entities.Models.Doctors", b =>
                 {
-                    b.Property<string>("DoctorCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("DoctorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"), 1L, 1);
 
                     b.Property<string>("DoctorName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DoctorSpecialityId")
                         .HasColumnType("int");
 
                     b.Property<string>("DoctorSurname")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DoctorCode");
+                    b.HasKey("DoctorId");
 
                     b.HasIndex("DoctorSpecialityId");
 
@@ -138,36 +144,33 @@ namespace DoctorAppointmentsAPI.Migrations
                     b.Property<DateTime>("ChangeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NewFamilyDoctorCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("NewFamilyDoctorId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("PatientTCId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("PreviousFamilyDoctorCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int?>("PreviousFamilyDoctorId")
+                        .HasColumnType("int");
 
                     b.HasKey("ChangeId");
 
-                    b.HasIndex("NewFamilyDoctorCode");
+                    b.HasIndex("NewFamilyDoctorId");
 
-                    b.HasIndex("PatientTCId");
+                    b.HasIndex("PatientId");
 
-                    b.HasIndex("PreviousFamilyDoctorCode");
+                    b.HasIndex("PreviousFamilyDoctorId");
 
                     b.ToTable("FamilyDoctorChanges");
                 });
 
             modelBuilder.Entity("Entities.Models.Patients", b =>
                 {
-                    b.Property<long>("PatientTCId")
+                    b.Property<int>("PatientId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PatientTCId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"), 1L, 1);
 
                     b.Property<DateTime>("PatientBirthDate")
                         .HasColumnType("date");
@@ -175,28 +178,24 @@ namespace DoctorAppointmentsAPI.Migrations
                     b.Property<DateTime?>("PatientFamilyDoctorAppointDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PatientFamilyDoctorCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int?>("PatientFamilyDoctorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PatientGender")
                         .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientSurname")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PatientTCId");
+                    b.HasKey("PatientId");
 
-                    b.HasIndex("PatientFamilyDoctorCode");
+                    b.HasIndex("PatientFamilyDoctorId");
 
                     b.ToTable("Patients");
                 });
@@ -205,7 +204,7 @@ namespace DoctorAppointmentsAPI.Migrations
                 {
                     b.HasOne("Entities.Models.Appointments", "Appointment")
                         .WithMany("Medications")
-                        .HasForeignKey("AppointmentCode")
+                        .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -216,13 +215,13 @@ namespace DoctorAppointmentsAPI.Migrations
                 {
                     b.HasOne("Entities.Models.Doctors", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorCode")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Entities.Models.Patients", "Patient")
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientTCId")
+                        .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -246,19 +245,19 @@ namespace DoctorAppointmentsAPI.Migrations
                 {
                     b.HasOne("Entities.Models.Doctors", "NewFamilyDoctor")
                         .WithMany()
-                        .HasForeignKey("NewFamilyDoctorCode")
+                        .HasForeignKey("NewFamilyDoctorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Entities.Models.Patients", "Patient")
                         .WithMany("FamilyDoctorChanges")
-                        .HasForeignKey("PatientTCId")
+                        .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Entities.Models.Doctors", "PreviousFamilyDoctor")
                         .WithMany()
-                        .HasForeignKey("PreviousFamilyDoctorCode")
+                        .HasForeignKey("PreviousFamilyDoctorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -273,7 +272,7 @@ namespace DoctorAppointmentsAPI.Migrations
                 {
                     b.HasOne("Entities.Models.Doctors", "FamilyDoctor")
                         .WithMany()
-                        .HasForeignKey("PatientFamilyDoctorCode")
+                        .HasForeignKey("PatientFamilyDoctorId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("FamilyDoctor");

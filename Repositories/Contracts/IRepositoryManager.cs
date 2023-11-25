@@ -7,7 +7,6 @@
         IDoctorRepository Doctor { get; }
         IDoctorSpecialityRepository DoctorSpeciality { get; }
         IFamilyDoctorChangesRepository FamilyDoctorChanges { get; }
-        IFamilyDoctorRepository FamilyDoctor { get; }
         IPatientRepository Patient { get; }
         Task SaveAsync();
     }

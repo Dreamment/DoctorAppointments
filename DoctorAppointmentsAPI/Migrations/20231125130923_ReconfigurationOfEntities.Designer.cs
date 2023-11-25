@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories;
 
@@ -11,9 +12,10 @@ using Repositories;
 namespace DoctorAppointmentsAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231125130923_ReconfigurationOfEntities")]
+    partial class ReconfigurationOfEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,6 +171,9 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PatientTCId"), 1L, 1);
 
+                    b.Property<string>("DoctorsDoctorCode")
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<DateTime>("PatientBirthDate")
                         .HasColumnType("date");
 
@@ -195,6 +200,8 @@ namespace DoctorAppointmentsAPI.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("PatientTCId");
+
+                    b.HasIndex("DoctorsDoctorCode");
 
                     b.HasIndex("PatientFamilyDoctorCode");
 
@@ -271,6 +278,10 @@ namespace DoctorAppointmentsAPI.Migrations
 
             modelBuilder.Entity("Entities.Models.Patients", b =>
                 {
+                    b.HasOne("Entities.Models.Doctors", null)
+                        .WithMany("Patients")
+                        .HasForeignKey("DoctorsDoctorCode");
+
                     b.HasOne("Entities.Models.Doctors", "FamilyDoctor")
                         .WithMany()
                         .HasForeignKey("PatientFamilyDoctorCode")
@@ -287,6 +298,8 @@ namespace DoctorAppointmentsAPI.Migrations
             modelBuilder.Entity("Entities.Models.Doctors", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("Entities.Models.Patients", b =>

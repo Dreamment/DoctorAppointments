@@ -7,15 +7,18 @@ namespace Entities.Models
     public class Patients
     {
         [Key]
-        public int PatientId { get; set; }
+        public ulong PatientTCId { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public string PatientName { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public string PatientSurname { get; set; }
 
         [Required]
+        [MaxLength(6),MinLength(4)]
         public string PatientGender { get; set; }
 
         [Required]
@@ -23,13 +26,17 @@ namespace Entities.Models
 
         [AllowNull]
         [ForeignKey("FamilyDoctor")]
-        public int? PatientFamilyDoctorId { get; set; }
+        [MaxLength(10),MinLength(10)]
+        public string? PatientFamilyDoctorCode { get; set; }
+
+        [AllowNull]
+        public DateTime? PatientFamilyDoctorAppointDate { get; set; }
 
 
-        public virtual FamilyDoctors? FamilyDoctor { get; set; }
+        public virtual Doctors? FamilyDoctor { get; set; }
 
-        public virtual IEnumerable<Appointments> Appointments { get; set; }
+        public virtual ICollection<Appointments>? Appointments { get; set; }
 
-        public virtual IEnumerable<FamilyDoctorChanges> FamilyDoctorChanges { get; set; }
+        public virtual ICollection<FamilyDoctorChanges>? FamilyDoctorChanges { get; set; }
     }
 }

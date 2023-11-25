@@ -1,9 +1,14 @@
-﻿namespace Entities.DataTransferObjects
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Entities.DataTransferObjects
 {
     public class CreateAppointmentDto
     {
-        public int PatientId { get; set; }
-        public int DoctorId { get; set; }
+        [Required]
+        public ulong PatientTCId { get; set; }
+        [Required]
+        public string DoctorCode { get; set; }
+        [Required]
         public DateTime AppointmentDateTime { get; set; }
     }
 }

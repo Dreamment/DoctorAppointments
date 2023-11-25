@@ -6,21 +6,18 @@ namespace Entities.DataTransferObjects
     public class PartiallyUpdateAppointmentForDoctorDto
     {
         [AllowNull]
-        public int AppointmentId { get; set; }
+        public string AppointmentCode { get; set; }
 
         [AllowNull]
-        public int PatientId { get; set; }
+        public ulong PatientTCId { get; set; }
 
         [AllowNull]
-        public int DoctorId { get; set; }
+        public string DoctorCode { get; set; }
 
         [AllowNull]
         public DateTime AppointmentDateTime { get; set; }
 
         [Required]
         public bool Status { get; set; }
-
-        [AllowNull]
-        public string AppointmentCode { get; set; }
     }
 }

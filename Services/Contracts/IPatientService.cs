@@ -4,9 +4,9 @@ namespace Services.Contracts
 {
     public interface IPatientService
     {
-        Task<IEnumerable<GetAppointmentsForPatientDto>> GetAppointmentsForPatientAsync(int patientId, bool trackChanges);
+        Task<IEnumerable<GetAppointmentsForPatientDto>> GetAppointmentsForPatientAsync(ulong patientTCId, bool trackChanges);
         Task <string>CreateAppointmentAsync(CreateAppointmentDto appointmentDto, bool trackChanges);
-        Task<IEnumerable<GetMedicationsForAppointmentDto>> GetMedicationsForAppointmentAsync(int patientId, string appointmentCode, bool trackChanges);
-        Task<GetFamilyDoctorDto> GetFamilyDoctorAsync(int patientId, bool trackChanges);
+        Task<IEnumerable<GetMedicationsForAppointmentDto>> GetMedicationsForAppointmentAsync(ulong patientTCId, string appointmentCode, bool trackChanges);
+        Task<GetFamilyDoctorDto> GetFamilyDoctorAsync(ulong patientTCId, bool trackChanges);
     }
 }

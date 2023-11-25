@@ -19,12 +19,6 @@ namespace Repositories
         public async Task<IEnumerable<Appointments>> GetAllAppointmentsAsync(bool trackChanges)
             => await FindAllAsync(trackChanges);
 
-        public async Task<Appointments> GetAppointmentByCodeAsync(string appointmentCode, bool trackChanges)
-        {
-            var appointments = await FindByConditionAsync(a => a.AppointmentCode.Equals(appointmentCode), trackChanges);
-            return appointments.FirstOrDefault();
-        }
-
         public async Task<IEnumerable<Appointments>> GetAppointmentsByConditionAsync(Expression<Func<Appointments, bool>> expression, bool trackChanges)
             => await FindByConditionAsync(expression, trackChanges);
 

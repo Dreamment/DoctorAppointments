@@ -22,12 +22,6 @@ namespace Repositories
         public async Task<IEnumerable<DoctorSpecialties>> GetDoctorSpecialtiesByConditionAsync(Expression<Func<DoctorSpecialties, bool>> expression, bool trackChanges)
             => await FindByConditionAsync(expression, trackChanges);
 
-        public async Task<DoctorSpecialties> GetDoctorSpecialtyByIdAsync(int doctorSpecialtyId, bool trackChanges)
-        {
-            var doctorSpecialties = await FindByConditionAsync(d => d.DoctorSpecialityId.Equals(doctorSpecialtyId), trackChanges);
-            return doctorSpecialties.FirstOrDefault();
-        }
-
         public async Task UpdateDoctorSpecialtyAsync(DoctorSpecialties doctorSpecialty)
             => await UpdateAsync(doctorSpecialty);
     }

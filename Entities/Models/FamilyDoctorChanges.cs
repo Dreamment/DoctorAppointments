@@ -11,15 +11,17 @@ namespace Entities.Models
 
         [Required]
         [ForeignKey("Patient")]
-        public int PatientId { get; set; }
+        public ulong PatientTCId { get; set; }
 
         [AllowNull]
         [ForeignKey("PreviousFamilyDoctor")]
-        public int? PreviousFamilyDoctorId { get; set; }
+        [MaxLength(10), MinLength(10)]
+        public string? PreviousFamilyDoctorCode { get; set; }
 
         [Required]
         [ForeignKey("NewFamilyDoctor")]
-        public int NewFamilyDoctorId { get; set; }
+        [MaxLength(10), MinLength(10)]
+        public string NewFamilyDoctorCode { get; set; }
 
         [Required]
         public DateTime ChangeDate { get; set; }

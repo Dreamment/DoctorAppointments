@@ -5,14 +5,13 @@ namespace Repositories
 {
     public class RepositoryContext : DbContext
     {
-        public RepositoryContext(DbContextOptions context) : base(context)
+        public RepositoryContext(DbContextOptions options) : base(options)
         {
 
         }
 
         public DbSet<Doctors> Doctors { get; set; }
         public DbSet<Patients> Patients { get; set; }
-        public DbSet<FamilyDoctors> FamilyDoctors { get; set; }
         public DbSet<Appointments> Appointments { get; set; }
         public DbSet<DoctorSpecialties> DoctorSpecialties { get; set; }
         public DbSet<FamilyDoctorChanges> FamilyDoctorChanges { get; set; }
@@ -21,37 +20,45 @@ namespace Repositories
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointments>()
-                .HasIndex(a => a.AppointmentCode)
-                .IsUnique();
+                .Property(a => a.PatientTCId)
+                .HasColumnType("bigint");
+
+            modelBuilder.Entity<FamilyDoctorChanges>()
+                .Property(f => f.PatientTCId)
+                .HasColumnType("bigint");
 
             modelBuilder.Entity<Patients>()
                 .Property(p => p.PatientBirthDate)
                 .HasColumnType("date");
 
+            modelBuilder.Entity<Patients>()
+                .Property(p => p.PatientTCId)
+                .HasColumnType("bigint");
+
             modelBuilder.Entity<FamilyDoctorChanges>()
-                .Property(f => f.PreviousFamilyDoctorId)
+                .Property(f => f.PreviousFamilyDoctorCode)
                 .IsRequired(false);
 
             modelBuilder.Entity<Patients>()
-                .Property(p => p.PatientFamilyDoctorId)
+                .Property(p => p.PatientFamilyDoctorCode)
                 .IsRequired(false);
 
             modelBuilder.Entity<Appointments>()
                 .HasOne(a => a.Doctor)
                 .WithMany(d => d.Appointments)
-                .HasForeignKey(a => a.DoctorId)
+                .HasForeignKey(a => a.DoctorCode)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Appointments>()
                 .HasOne(a => a.Patient)
                 .WithMany(p => p.Appointments)
-                .HasForeignKey(a => a.PatientId)
+                .HasForeignKey(a => a.PatientTCId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<AppointmentMedications>()
                 .HasOne(am => am.Appointment)
                 .WithMany(a => a.Medications)
-                .HasForeignKey(am => am.AppointmentId)
+                .HasForeignKey(am => am.AppointmentCode)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Doctors>()
@@ -63,37 +70,25 @@ namespace Repositories
             modelBuilder.Entity<FamilyDoctorChanges>()
                 .HasOne(f => f.PreviousFamilyDoctor)
                 .WithMany()
-                .HasForeignKey(f => f.PreviousFamilyDoctorId)
+                .HasForeignKey(f => f.PreviousFamilyDoctorCode)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FamilyDoctorChanges>()
                 .HasOne(f => f.NewFamilyDoctor)
                 .WithMany()
-                .HasForeignKey(f => f.NewFamilyDoctorId)
+                .HasForeignKey(f => f.NewFamilyDoctorCode)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FamilyDoctorChanges>()
                 .HasOne(f => f.Patient)
                 .WithMany(p => p.FamilyDoctorChanges)
-                .HasForeignKey(f => f.PatientId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<FamilyDoctors>()
-                .HasOne(fd => fd.Doctor)
-                .WithMany()
-                .HasForeignKey(fd => fd.DoctorId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<FamilyDoctors>()
-                .HasOne(fd => fd.Patient)
-                .WithMany()
-                .HasForeignKey(fd => fd.PatientId)
+                .HasForeignKey(f => f.PatientTCId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Patients>()
                 .HasOne(p => p.FamilyDoctor)
                 .WithMany()
-                .HasForeignKey(p => p.PatientFamilyDoctorId)
+                .HasForeignKey(p => p.PatientFamilyDoctorCode)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

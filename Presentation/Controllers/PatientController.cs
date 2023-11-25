@@ -16,7 +16,7 @@ namespace DoctorAppointmentsAPI.Controllers
         }
 
         [HttpGet("Appointments/{patientId:int}", Name = "GetAppointments")]
-        public async Task<IActionResult> GetAppointmentsAsync([FromRoute(Name = "patientId")] int patientId)
+        public async Task<IActionResult> GetAppointmentsAsync([FromRoute(Name = "patientId")] ulong patientId)
         {
             var appointments = await _manager.GetAppointmentsForPatientAsync(patientId, false);
             if (appointments == null)
@@ -25,7 +25,7 @@ namespace DoctorAppointmentsAPI.Controllers
         }
 
         [HttpGet("FamilyDoctor/{patientId:int}", Name = "GetFamilyDoctor")]
-        public async Task<IActionResult> GetFamilyDoctorAsync([FromRoute(Name = "patientId")] int patientId)
+        public async Task<IActionResult> GetFamilyDoctorAsync([FromRoute(Name = "patientId")] ulong patientId)
         {
             var familyDoctor = await _manager.GetFamilyDoctorAsync(patientId, false);
             if (familyDoctor == null)
@@ -34,7 +34,7 @@ namespace DoctorAppointmentsAPI.Controllers
         }
 
         [HttpGet("Medications/{patientId:int}/{appointmentCode}", Name = "GetMedications")]
-        public async Task<IActionResult> GetMedicationsAsync([FromRoute(Name = "patientId")] int patientId, [FromRoute(Name = "appointmentCode")] string appointmentCode)
+        public async Task<IActionResult> GetMedicationsAsync([FromRoute(Name = "patientId")] ulong patientId, [FromRoute(Name = "appointmentCode")] string appointmentCode)
         {
             var medications = await _manager.GetMedicationsForAppointmentAsync(patientId, appointmentCode, false);
             if (medications == null)

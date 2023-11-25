@@ -11,7 +11,6 @@ namespace Repositories
         private Lazy<IDoctorRepository> _doctorRepository;
         private Lazy<IDoctorSpecialityRepository> _doctorSpecialityRepository;
         private Lazy<IFamilyDoctorChangesRepository> _familyDoctorChangesRepository;
-        private Lazy<IFamilyDoctorRepository> _familyDoctorRepository;
         private Lazy<IPatientRepository> _patientRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -31,9 +30,6 @@ namespace Repositories
             _familyDoctorChangesRepository = new Lazy<IFamilyDoctorChangesRepository>(()
                 => new FamilyDoctorChangesRepository(_repositoryContext));
 
-            _familyDoctorRepository = new Lazy<IFamilyDoctorRepository>(()
-                => new FamilyDoctorRepository(_repositoryContext));
-
             _patientRepository = new Lazy<IPatientRepository>(()
                 => new PatientRepository(_repositoryContext));
         }
@@ -48,8 +44,6 @@ namespace Repositories
             => _doctorSpecialityRepository.Value;
         public IFamilyDoctorChangesRepository FamilyDoctorChanges
             => _familyDoctorChangesRepository.Value;
-        public IFamilyDoctorRepository FamilyDoctor
-            => _familyDoctorRepository.Value;
         public IPatientRepository Patient
             => _patientRepository.Value;
 

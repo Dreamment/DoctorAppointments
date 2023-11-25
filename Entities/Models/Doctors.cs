@@ -6,12 +6,15 @@ namespace Entities.Models
     public class Doctors
     {
         [Key]
-        public int DoctorId { get; set; }
+        [MaxLength(10), MinLength(10)]
+        public string DoctorCode { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public string DoctorName { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public string DoctorSurname { get; set; }
 
         [Required]
@@ -19,8 +22,9 @@ namespace Entities.Models
         public int DoctorSpecialityId { get; set; }
 
 
+        [Required]
         public virtual DoctorSpecialties DoctorSpeciality { get; set; }
         
-        public virtual IEnumerable<Appointments> Appointments { get; set; }
+        public virtual ICollection<Appointments>? Appointments { get; set; }
     }
 }
