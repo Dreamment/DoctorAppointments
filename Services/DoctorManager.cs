@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using Entities.DataTransferObjects;
 using Repositories.Contracts;
 using Services.Contracts;
 using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Entities.DataTransferObjects.Create;
+using Entities.DataTransferObjects.Get;
+using Entities.DataTransferObjects.Update;
 
 namespace Services
 {

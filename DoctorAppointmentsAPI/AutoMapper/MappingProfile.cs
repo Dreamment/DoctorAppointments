@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Create;
+using Entities.DataTransferObjects.Get;
+using Entities.DataTransferObjects.Update;
 using Entities.Models;
 
 namespace DoctorAppointmentsAPI.AutoMapper

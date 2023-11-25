@@ -1,18 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Entities.DataTransferObjects
+﻿namespace Entities.DataTransferObjects.Get
 {
-    public class CreateMedicationDto
+    public class GetMedicationsForAppointmentDto
     {
-        [Required]
+        public string MedicationCode { get; set; }
         public string AppointmentCode { get; set; }
-
-        [Required]
         public string MedicationName { get; set; }
-
-        [Required]
         public string Dosage { get; set; }
-
         public string UsageInstructions { get; set; }
     }
 }

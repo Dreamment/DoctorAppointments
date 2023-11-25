@@ -1,6 +1,6 @@
-﻿using Entities.DataTransferObjects;
-using Services.Contracts;
+﻿using Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Entities.DataTransferObjects.Create;
 
 namespace DoctorAppointmentsAPI.Controllers
 {

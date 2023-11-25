@@ -1,4 +1,6 @@
-﻿using Entities.DataTransferObjects;
+﻿using Entities.DataTransferObjects.Create;
+using Entities.DataTransferObjects.Get;
+using Entities.DataTransferObjects.Update;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace Services.Contracts

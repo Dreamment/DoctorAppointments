@@ -1,19 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Entities.DataTransferObjects
+namespace Entities.DataTransferObjects.Create
 {
-    public class UpdateDoctorDto
+    public class CreateDoctorDto
     {
-        [AllowNull]
+        [Required]
         [MaxLength(20)]
         public string DoctorName { get; set; }
 
-        [AllowNull]
+        [Required]
         [MaxLength(20)]
         public string DoctorSurname { get; set; }
 
-        [AllowNull]
+        [Required]
         public int DoctorSpecialityId { get; set; }
     }
 }

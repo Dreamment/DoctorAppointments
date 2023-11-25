@@ -1,4 +1,5 @@
-﻿using Entities.DataTransferObjects;
+﻿using Entities.DataTransferObjects.Create;
+using Entities.DataTransferObjects.Update;
 using Entities.Models;
 
 namespace Services.Contracts

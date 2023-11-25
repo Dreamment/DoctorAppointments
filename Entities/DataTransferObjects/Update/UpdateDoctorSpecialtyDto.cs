@@ -1,4 +1,4 @@
-﻿namespace Entities.DataTransferObjects
+﻿namespace Entities.DataTransferObjects.Update
 {
     public class UpdateDoctorSpecialtyDto
     {

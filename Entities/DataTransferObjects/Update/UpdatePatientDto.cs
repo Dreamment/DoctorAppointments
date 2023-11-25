@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Entities.DataTransferObjects
+namespace Entities.DataTransferObjects.Update
 {
     public class UpdatePatientDto
     {
