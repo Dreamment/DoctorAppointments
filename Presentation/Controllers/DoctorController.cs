@@ -25,6 +25,15 @@ namespace DoctorAppointmentsAPI.Controllers
             return Ok(patients);
         }
 
+        [HttpGet("PastAppointments/{doctorCode}", Name = "GetPastAppointmentsAsync")]
+        public async Task<IActionResult> GetPastAppointmentsAsync([FromRoute(Name = "doctorCode")] string doctorCode)
+        {
+            var appointments = await _manager.GetPastAppointmentsAsync(doctorCode, false);
+            if (appointments == null)
+                return NotFound("You don't have any past appointment.");
+            return Ok(appointments);
+        }
+
         [HttpGet("TodaysAppointments/{doctorCode}", Name = "GetTodaysAppointmentsAsync")]
         public async Task<IActionResult> GetTodaysAppointmentsAsync([FromRoute(Name = "doctorCode")] string doctorCode)
         {
