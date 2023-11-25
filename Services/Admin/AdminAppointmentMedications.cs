@@ -16,7 +16,7 @@ namespace Services.Admin
             _repositoryManager = repositoryManager;
             _mapper = mapper;
         }
-        internal async Task<string> CreateAppointmentMedication(CreateMedicationDto medicationDto, bool trackChanges)
+        internal async Task<string> CreateAppointmentMedicationAsync(CreateMedicationDto medicationDto, bool trackChanges)
         {
             var appointment = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.AppointmentCode == medicationDto.AppointmentCode, trackChanges);
@@ -30,7 +30,7 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
             return medication.MedicationCode;
         }
-        internal async Task DeleteAppointmentMedication(string medicationCode, bool trackChanges)
+        internal async Task DeleteAppointmentMedicationAsync(string medicationCode, bool trackChanges)
         {
             var medications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
                 m => m.MedicationCode == medicationCode, trackChanges);
@@ -41,13 +41,13 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedications(bool trackChanges)
+        internal async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedicationsAsync(bool trackChanges)
             => await _repositoryManager.AppointmentMedication.GetAllAppointmentMedicationsAsync(trackChanges);
 
-        internal async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByAppointmentCode(string appointmentCode, bool trackChanges)
+        internal async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByAppointmentCodeAsync(string appointmentCode, bool trackChanges)
         => await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
             m => m.AppointmentCode == appointmentCode, trackChanges);
-        internal async Task UpdateAppointmentMedication(string medicationCode, UpdateAppointmentMedicationDto updateAppointmentMedicationDto, bool trackChanges)
+        internal async Task UpdateAppointmentMedicationAsync(string medicationCode, UpdateAppointmentMedicationDto updateAppointmentMedicationDto, bool trackChanges)
         {
             var medications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
                 m => m.MedicationCode == medicationCode, trackChanges);

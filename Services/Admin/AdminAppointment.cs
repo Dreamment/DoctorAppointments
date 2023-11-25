@@ -17,12 +17,12 @@ namespace Services.Admin
             _mapper = mapper;
         }
 
-        internal async Task<string> CreateAppointment(CreateAppointmentDto appointmentDto, bool trackChanges)
+        internal async Task<string> CreateAppointmentAsync(CreateAppointmentDto appointmentDto, bool trackChanges)
         {
             var appointment = _mapper.Map<Appointments>(appointmentDto);
             appointment.AppointmentDateTime = DateTime.Now;
             appointment.AppointmentCode = GenerateAppointmentCode();
-            while (await IsAppointmentCodeExist(appointment.AppointmentCode, trackChanges))
+            while (await IsAppointmentCodeExistAsync(appointment.AppointmentCode, trackChanges))
             {
                 appointment.AppointmentCode = GenerateAppointmentCode();
             }
@@ -31,7 +31,7 @@ namespace Services.Admin
             return appointment.AppointmentCode;
         }
 
-        internal async Task DeleteAppointment(string appointmentCode, bool trackChanges)
+        internal async Task DeleteAppointmentAsync(string appointmentCode, bool trackChanges)
         {
             var appointments = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.AppointmentCode == appointmentCode, trackChanges);
@@ -42,18 +42,18 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task<IEnumerable<Appointments>> GetAllAppointments(bool trackChanges) 
+        internal async Task<IEnumerable<Appointments>> GetAllAppointmentsAsync(bool trackChanges) 
             => await _repositoryManager.Appointment.GetAllAppointmentsAsync(trackChanges);
 
-        internal async Task<IEnumerable<Appointments>> GetAppointmentsByDoctorCode(string doctorCode, bool trackChanges)
+        internal async Task<IEnumerable<Appointments>> GetAppointmentsByDoctorCodeAsync(string doctorCode, bool trackChanges)
             => await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.DoctorCode == doctorCode, trackChanges);
 
-        internal async Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCId(ulong patientTCId, bool trackChanges)
+        internal async Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
             => await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.PatientTCId == patientTCId, trackChanges);
 
-        internal async Task UpdateAppointment(string appointmentCode, UpdateAppointmentDto updateAppointmentDto, bool trackChanges)
+        internal async Task UpdateAppointmentAsync(string appointmentCode, UpdateAppointmentDto updateAppointmentDto, bool trackChanges)
         {
             var appointments = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.AppointmentCode == appointmentCode, trackChanges);
@@ -71,7 +71,7 @@ namespace Services.Admin
             return new string(Enumerable.Repeat(chars, 15).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private async Task<bool> IsAppointmentCodeExist(string appointmentCode, bool trackChanges)
+        private async Task<bool> IsAppointmentCodeExistAsync(string appointmentCode, bool trackChanges)
         {
             var appointment = await _repositoryManager.Appointment
                 .GetAppointmentsByConditionAsync(a => a.AppointmentCode == appointmentCode, trackChanges);

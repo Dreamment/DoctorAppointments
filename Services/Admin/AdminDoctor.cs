@@ -17,11 +17,11 @@ namespace Services.Admin
             _mapper = mapper;
         }
 
-        internal async Task<string> CreateDoctor(CreateDoctorDto doctorDto, bool trackChanges)
+        internal async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges)
         {
             var doctor = _mapper.Map<Doctors>(doctorDto);
             doctor.DoctorCode = GenerateDoctorCode();
-            while (await IsDoctorCodeExist(doctor.DoctorCode, trackChanges))
+            while (await IsDoctorCodeExistAsync(doctor.DoctorCode, trackChanges))
             {
                 doctor.DoctorCode = GenerateDoctorCode();
             }
@@ -30,7 +30,7 @@ namespace Services.Admin
             return doctor.DoctorCode;
         }
 
-        internal async Task DeleteDoctor(string doctorCode, bool trackChanges)
+        internal async Task DeleteDoctorAsync(string doctorCode, bool trackChanges)
         {
             var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
                 d => d.DoctorCode == doctorCode, trackChanges);
@@ -41,17 +41,17 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task<IEnumerable<Doctors>> GetAllDoctors(bool trackChanges)
+        internal async Task<IEnumerable<Doctors>> GetAllDoctorsAsync(bool trackChanges)
             => await _repositoryManager.Doctor.GetAllDoctorsAsync(trackChanges);
 
-        internal async Task<Doctors> GetDoctorByDoctorCode(string doctorCode, bool trackChanges)
+        internal async Task<Doctors> GetDoctorByDoctorCodeAsync(string doctorCode, bool trackChanges)
         {
             var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
                 d => d.DoctorCode == doctorCode, trackChanges);
             return doctors.FirstOrDefault();
         }
 
-        internal async Task UpdateDoctor(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges)
+        internal async Task UpdateDoctorAsync(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges)
         {
             var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
                 d => d.DoctorCode == doctorCode, trackChanges);
@@ -69,7 +69,7 @@ namespace Services.Admin
             return new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private async Task<bool> IsDoctorCodeExist(string doctorCode, bool trackChanges)
+        private async Task<bool> IsDoctorCodeExistAsync(string doctorCode, bool trackChanges)
         {
             var doctor = await _repositoryManager.Doctor
                 .GetDoctorsByConditionAsync(d => d.DoctorCode == doctorCode, trackChanges);

@@ -17,14 +17,14 @@ namespace Services.Admin
             _mapper = mapper;
         }
 
-        internal async Task CreateDoctorSpecialty(CreateDoctorSpecialtyDto doctorSpecialtyDto, bool trackChanges)
+        internal async Task CreateDoctorSpecialtyAsync(CreateDoctorSpecialtyDto doctorSpecialtyDto, bool trackChanges)
         {
             var doctorSpecialty = _mapper.Map<DoctorSpecialties>(doctorSpecialtyDto);
             await _repositoryManager.DoctorSpeciality.CreateDoctorSpecialtyAsync(doctorSpecialty);
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task DeleteDoctorSpecialty(int doctorSpecialtyId, bool trackChanges)
+        internal async Task DeleteDoctorSpecialtyAsync(int doctorSpecialtyId, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
                 ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);
@@ -35,17 +35,17 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task<IEnumerable<DoctorSpecialties>> GetAllDoctorSpecialties(bool trackChanges)
+        internal async Task<IEnumerable<DoctorSpecialties>> GetAllDoctorSpecialtiesAsync(bool trackChanges)
             => await _repositoryManager.DoctorSpeciality.GetAllDoctorSpecialtiesAsync(trackChanges);
 
-        internal async Task<DoctorSpecialties> GetDoctorSpecialtyByDoctorSpecialtyId(int doctorSpecialtyId, bool trackChanges)
+        internal async Task<DoctorSpecialties> GetDoctorSpecialtyByDoctorSpecialtyIdAsync(int doctorSpecialtyId, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
                 ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);
             return doctorSpecialties.FirstOrDefault();
         }
 
-        internal async Task UpdateDoctorSpecialty(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
+        internal async Task UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
                                ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);

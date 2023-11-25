@@ -16,14 +16,14 @@ namespace Services.Admin
             _mapper = mapper;
         }
 
-        internal async Task CreateFamilyDoctorChange(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges)
+        internal async Task CreateFamilyDoctorChangeAsync(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges)
         {
             var familyDoctorChange = _mapper.Map<FamilyDoctorChanges>(familyDoctorChangeDto);
             await _repositoryManager.FamilyDoctorChanges.CreateFamilyDoctorChangeAsync(familyDoctorChange);
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task DeleteFamilyDoctorChange(int changeId, bool trackChanges)
+        internal async Task DeleteFamilyDoctorChangeAsync(int changeId, bool trackChanges)
         {
             var familyDoctorChanges = await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
                 fdc => fdc.ChangeId == changeId, trackChanges);
@@ -32,14 +32,14 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChanges(bool trackChanges)
+        internal async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChangesAsync(bool trackChanges)
             => await _repositoryManager.FamilyDoctorChanges.GetAllFamilyDoctorChangesAsync(trackChanges);
 
-        internal async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCode(string doctorCode, bool trackChanges)
+        internal async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCodeAsync(string doctorCode, bool trackChanges)
             => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
                 fdc => fdc.NewFamilyDoctorCode == doctorCode || fdc.PreviousFamilyDoctorCode == doctorCode, trackChanges);
 
-        internal async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCId(ulong patientTCId, bool trackChanges)
+        internal async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
             => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
                 fdc => fdc.PatientTCId == patientTCId, trackChanges);
     }

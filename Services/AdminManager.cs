@@ -33,102 +33,102 @@ namespace Services
         }
 
         // AppointmentMedications
-        public async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedications(bool trackChanges)
-            => await _appointmentMedications.GetAllAppointmentMedications(trackChanges);
+        public async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedicationsAsync(bool trackChanges)
+            => await _appointmentMedications.GetAllAppointmentMedicationsAsync(trackChanges);
 
-        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByAppointmentCode(string appointmentCode, bool trackChanges)
-            => await _appointmentMedications.GetAppointmentMedicationsByAppointmentCode(appointmentCode, trackChanges);
+        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByAppointmentCodeAsync(string appointmentCode, bool trackChanges)
+            => await _appointmentMedications.GetAppointmentMedicationsByAppointmentCodeAsync(appointmentCode, trackChanges);
 
-        public async Task<string> CreateAppointmentMedication(CreateMedicationDto medicationDto, bool trackChanges)
-            => await _appointmentMedications.CreateAppointmentMedication(medicationDto, trackChanges);
+        public async Task<string> CreateAppointmentMedicationAsync(CreateMedicationDto medicationDto, bool trackChanges)
+            => await _appointmentMedications.CreateAppointmentMedicationAsync(medicationDto, trackChanges);
 
-        public async Task DeleteAppointmentMedication(string medicationCode, bool trackChanges)
-            => await _appointmentMedications.DeleteAppointmentMedication(medicationCode, trackChanges);
+        public async Task DeleteAppointmentMedicationAsync(string medicationCode, bool trackChanges)
+            => await _appointmentMedications.DeleteAppointmentMedicationAsync(medicationCode, trackChanges);
 
-        public async Task UpdateAppointmentMedication(string medicationCode, UpdateAppointmentMedicationDto updateAppointmentMedicationDto, bool trackChanges)
-            => await _appointmentMedications.UpdateAppointmentMedication(medicationCode, updateAppointmentMedicationDto, trackChanges);
+        public async Task UpdateAppointmentMedicationAsync(string medicationCode, UpdateAppointmentMedicationDto updateAppointmentMedicationDto, bool trackChanges)
+            => await _appointmentMedications.UpdateAppointmentMedicationAsync(medicationCode, updateAppointmentMedicationDto, trackChanges);
 
         // Appointments
-        public async Task<IEnumerable<Appointments>> GetAllAppointments(bool trackChanges)
-            => await _appointment.GetAllAppointments(trackChanges);
+        public async Task<IEnumerable<Appointments>> GetAllAppointmentsAsync(bool trackChanges)
+            => await _appointment.GetAllAppointmentsAsync(trackChanges);
 
-        public async Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCId(ulong patientTCId, bool trackChanges)
-            => await _appointment.GetAppointmentsByPatientTCId(patientTCId, trackChanges);
+        public async Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
+            => await _appointment.GetAppointmentsByPatientTCIdAsync(patientTCId, trackChanges);
 
-        public async Task<IEnumerable<Appointments>> GetAppointmentsByDoctorCode(string doctorCode, bool trackChanges)
-            => await _appointment.GetAppointmentsByDoctorCode(doctorCode, trackChanges);
+        public async Task<IEnumerable<Appointments>> GetAppointmentsByDoctorCodeAsync(string doctorCode, bool trackChanges)
+            => await _appointment.GetAppointmentsByDoctorCodeAsync(doctorCode, trackChanges);
 
-        public async Task<string> CreateAppointment(CreateAppointmentDto appointmentDto, bool trackChanges)
-            => await _appointment.CreateAppointment(appointmentDto, trackChanges);
+        public async Task<string> CreateAppointmentAsync(CreateAppointmentDto appointmentDto, bool trackChanges)
+            => await _appointment.CreateAppointmentAsync(appointmentDto, trackChanges);
 
-        public async Task DeleteAppointment(string appointmentCode, bool trackChanges)
-            => await _appointment.DeleteAppointment(appointmentCode, trackChanges);
+        public async Task DeleteAppointmentAsync(string appointmentCode, bool trackChanges)
+            => await _appointment.DeleteAppointmentAsync(appointmentCode, trackChanges);
 
-        public async Task UpdateAppointment(string appointmentCode, UpdateAppointmentDto updateAppointmentDto, bool trackChanges)
-            => await _appointment.UpdateAppointment(appointmentCode, updateAppointmentDto, trackChanges);
+        public async Task UpdateAppointmentAsync(string appointmentCode, UpdateAppointmentDto updateAppointmentDto, bool trackChanges)
+            => await _appointment.UpdateAppointmentAsync(appointmentCode, updateAppointmentDto, trackChanges);
 
         // Doctors
-        public async Task<IEnumerable<Doctors>> GetAllDoctors(bool trackChanges)
-            => await _doctor.GetAllDoctors(trackChanges);
+        public async Task<IEnumerable<Doctors>> GetAllDoctorsAsync(bool trackChanges)
+            => await _doctor.GetAllDoctorsAsync(trackChanges);
 
-        public async Task<Doctors> GetDoctorByDoctorCode(string doctorCode, bool trackChanges)
-            => await _doctor.GetDoctorByDoctorCode(doctorCode, trackChanges);
+        public async Task<Doctors> GetDoctorByDoctorCodeAsync(string doctorCode, bool trackChanges)
+            => await _doctor.GetDoctorByDoctorCodeAsync(doctorCode, trackChanges);
 
-        public async Task<string> CreateDoctor(CreateDoctorDto doctorDto, bool trackChanges)
-            => await _doctor.CreateDoctor(doctorDto, trackChanges);
+        public async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges)
+            => await _doctor.CreateDoctorAsync(doctorDto, trackChanges);
 
-        public async Task DeleteDoctor(string doctorCode, bool trackChanges)
-            => await _doctor.DeleteDoctor(doctorCode, trackChanges);
+        public async Task DeleteDoctorAsync(string doctorCode, bool trackChanges)
+            => await _doctor.DeleteDoctorAsync(doctorCode, trackChanges);
 
-        public async Task UpdateDoctor(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges)
-            => await _doctor.UpdateDoctor(doctorCode, updateDoctorDto, trackChanges);
+        public async Task UpdateDoctorAsync(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges)
+            => await _doctor.UpdateDoctorAsync(doctorCode, updateDoctorDto, trackChanges);
 
         // DoctorSpecialties
-        public async Task<IEnumerable<DoctorSpecialties>> GetAllDoctorSpecialties(bool trackChanges)
-            => await _doctorSpeciality.GetAllDoctorSpecialties(trackChanges);
+        public async Task<IEnumerable<DoctorSpecialties>> GetAllDoctorSpecialtiesAsync(bool trackChanges)
+            => await _doctorSpeciality.GetAllDoctorSpecialtiesAsync(trackChanges);
 
-        public async Task<DoctorSpecialties> GetDoctorSpecialtyByDoctorSpecialtyId(int doctorSpecialtyId, bool trackChanges)
-            => await _doctorSpeciality.GetDoctorSpecialtyByDoctorSpecialtyId(doctorSpecialtyId, trackChanges);
+        public async Task<DoctorSpecialties> GetDoctorSpecialtyByDoctorSpecialtyIdAsync(int doctorSpecialtyId, bool trackChanges)
+            => await _doctorSpeciality.GetDoctorSpecialtyByDoctorSpecialtyIdAsync(doctorSpecialtyId, trackChanges);
 
-        public async Task CreateDoctorSpecialty(CreateDoctorSpecialtyDto doctorSpecialtyDto, bool trackChanges)
-            => await _doctorSpeciality.CreateDoctorSpecialty(doctorSpecialtyDto, trackChanges);
+        public async Task CreateDoctorSpecialtyAsync(CreateDoctorSpecialtyDto doctorSpecialtyDto, bool trackChanges)
+            => await _doctorSpeciality.CreateDoctorSpecialtyAsync(doctorSpecialtyDto, trackChanges);
 
-        public async Task DeleteDoctorSpecialty(int doctorSpecialtyId, bool trackChanges)
-            => await _doctorSpeciality.DeleteDoctorSpecialty(doctorSpecialtyId, trackChanges);
+        public async Task DeleteDoctorSpecialtyAsync(int doctorSpecialtyId, bool trackChanges)
+            => await _doctorSpeciality.DeleteDoctorSpecialtyAsync(doctorSpecialtyId, trackChanges);
 
-        public async Task UpdateDoctorSpecialty(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
-            => await _doctorSpeciality.UpdateDoctorSpecialty(doctorSpecialtyId, updateDoctorSpecialtyDto, trackChanges);
+        public async Task UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
+            => await _doctorSpeciality.UpdateDoctorSpecialtyAsync(doctorSpecialtyId, updateDoctorSpecialtyDto, trackChanges);
 
         // FamilyDoctorChanges
-        public async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChanges(bool trackChanges)
-            => await _familyDoctorChange.GetAllFamilyDoctorChanges(trackChanges);
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChangesAsync(bool trackChanges)
+            => await _familyDoctorChange.GetAllFamilyDoctorChangesAsync(trackChanges);
 
-        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCId(ulong patientTCId, bool trackChanges)
-            => await _familyDoctorChange.GetFamilyDoctorChangesByPatientTCId(patientTCId, trackChanges);
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
+            => await _familyDoctorChange.GetFamilyDoctorChangesByPatientTCIdAsync(patientTCId, trackChanges);
 
-        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCode(string doctorCode, bool trackChanges)
-            => await _familyDoctorChange.GetFamilyDoctorChangesByDoctorCode(doctorCode, trackChanges);
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCodeAsync(string doctorCode, bool trackChanges)
+            => await _familyDoctorChange.GetFamilyDoctorChangesByDoctorCodeAsync(doctorCode, trackChanges);
 
-        public async Task CreateFamilyDoctorChange(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges)
-            => await _familyDoctorChange.CreateFamilyDoctorChange(familyDoctorChangeDto, trackChanges);
+        public async Task CreateFamilyDoctorChangeAsync(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges)
+            => await _familyDoctorChange.CreateFamilyDoctorChangeAsync(familyDoctorChangeDto, trackChanges);
 
-        public async Task DeleteFamilyDoctorChange(int changeId, bool trackChanges)
-            => await _familyDoctorChange.DeleteFamilyDoctorChange(changeId, trackChanges);
+        public async Task DeleteFamilyDoctorChangeAsync(int changeId, bool trackChanges)
+            => await _familyDoctorChange.DeleteFamilyDoctorChangeAsync(changeId, trackChanges);
 
         // Patients
-        public async Task<IEnumerable<Patients>> GetAllPatients(bool trackChanges)
-            => await _patient.GetAllPatients(trackChanges);
+        public async Task<IEnumerable<Patients>> GetAllPatientsAsync(bool trackChanges)
+            => await _patient.GetAllPatientsAsync(trackChanges);
 
-        public async Task<Patients> GetPatientByPatientTCId(ulong patientTCId, bool trackChanges)
-            => await _patient.GetPatientByPatientTCId(patientTCId, trackChanges);
+        public async Task<Patients> GetPatientByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
+            => await _patient.GetPatientByPatientTCIdAsync(patientTCId, trackChanges);
 
-        public async Task CreatePatient(CreatePatientDto patientDto, bool trackChanges)
-            => await _patient.CreatePatient(patientDto, trackChanges);
+        public async Task CreatePatientAsync(CreatePatientDto patientDto, bool trackChanges)
+            => await _patient.CreatePatientAsync(patientDto, trackChanges);
 
-        public async Task DeletePatient(ulong patientTCId, bool trackChanges)
-            => await _patient.DeletePatient(patientTCId, trackChanges);
+        public async Task DeletePatientAsync(ulong patientTCId, bool trackChanges)
+            => await _patient.DeletePatientAsync(patientTCId, trackChanges);
 
-        public async Task UpdatePatient(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges)
-            => await _patient.UpdatePatient(patientTCId, updatePatientDto, trackChanges);
+        public async Task UpdatePatientAsync(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges)
+            => await _patient.UpdatePatientAsync(patientTCId, updatePatientDto, trackChanges);
     }
 }

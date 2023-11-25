@@ -17,14 +17,14 @@ namespace Services.Admin
             _mapper = mapper;
         }
 
-        internal async Task CreatePatient(CreatePatientDto patientDto, bool trackChanges)
+        internal async Task CreatePatientAsync(CreatePatientDto patientDto, bool trackChanges)
         {
             var patient = _mapper.Map<Patients>(patientDto);
             await _repositoryManager.Patient.CreatePatientAsync(patient);
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task DeletePatient(ulong patientTCId, bool trackChanges)
+        internal async Task DeletePatientAsync(ulong patientTCId, bool trackChanges)
         {
             var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
                 p => p.PatientTCId == patientTCId, trackChanges);
@@ -33,17 +33,17 @@ namespace Services.Admin
             await _repositoryManager.SaveAsync();
         }
 
-        internal async Task<IEnumerable<Patients>> GetAllPatients(bool trackChanges)
+        internal async Task<IEnumerable<Patients>> GetAllPatientsAsync(bool trackChanges)
             => await _repositoryManager.Patient.GetAllPatientsAsync(trackChanges);
 
-        internal async Task<Patients> GetPatientByPatientTCId(ulong patientTCId, bool trackChanges)
+        internal async Task<Patients> GetPatientByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
         {
             var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
                 p => p.PatientTCId == patientTCId, trackChanges);
             return patients.FirstOrDefault();
         }
 
-        internal async Task UpdatePatient(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges)
+        internal async Task UpdatePatientAsync(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges)
         {
             var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
                 p => p.PatientTCId == patientTCId, trackChanges);
