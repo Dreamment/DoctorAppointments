@@ -18,6 +18,17 @@ namespace DoctorAppointmentsAPI.AutoMapper
             CreateMap<Appointments, GetAppointmentsForPatientDto>();
             CreateMap<Doctors, GetFamilyDoctorDto>();
             CreateMap<Appointments, PartiallyUpdateAppointmentForDoctorDto>().ReverseMap();
+            CreateMap<CreateMedicationDto, AppointmentMedications>();
+            CreateMap<UpdateAppointmentMedicationDto, AppointmentMedications>();
+            CreateMap<CreateAppointmentDto, Appointments>();
+            CreateMap<UpdateAppointmentDto, Appointments>();
+            CreateMap<CreateDoctorDto, Doctors>();
+            CreateMap<UpdateDoctorDto, Doctors>();
+            CreateMap<CreateDoctorSpecialtyDto, DoctorSpecialties>();
+            CreateMap<UpdateDoctorSpecialtyDto, DoctorSpecialties>();
+            CreateMap<CreateFamilyDoctorChangeDto, FamilyDoctorChanges>();
+            CreateMap<CreatePatientDto, Patients>();
+            CreateMap<UpdatePatientDto, Patients>();
         }
     }
 }
