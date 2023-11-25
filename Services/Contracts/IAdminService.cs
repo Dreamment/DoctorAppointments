@@ -15,7 +15,7 @@ namespace Services.Contracts
 
         // Appointments
         Task<IEnumerable<Appointments>> GetAllAppointments(bool trackChanges);
-        Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCId(int patientTCId, bool trackChanges);
+        Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCId(ulong patientTCId, bool trackChanges);
         Task<IEnumerable<Appointments>> GetAppointmentsByDoctorCode(string doctorCode, bool trackChanges);
         Task<string> CreateAppointment(CreateAppointmentDto appointmentDto, bool trackChanges);
         Task DeleteAppointment(string appointmentCode, bool trackChanges);
@@ -38,17 +38,17 @@ namespace Services.Contracts
         // FamilyDoctorChanges
 
         Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChanges(bool trackChanges);
-        Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCId(int patientTCId, bool trackChanges);
+        Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCId(ulong patientTCId, bool trackChanges);
         Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCode(string doctorCode, bool trackChanges);
-        Task<string> CreateFamilyDoctorChange(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges);
-        Task DeleteFamilyDoctorChange(string familyDoctorChangeCode, bool trackChanges);
+        Task CreateFamilyDoctorChange(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges);
+        Task DeleteFamilyDoctorChange(int changeId, bool trackChanges);
 
         // Patients
 
         Task<IEnumerable<Patients>> GetAllPatients(bool trackChanges);
-        Task<Patients> GetPatientByPatientTCId(int patientTCId, bool trackChanges);
-        Task<string> CreatePatient(CreatePatientDto patientDto, bool trackChanges);
-        Task DeletePatient(int patientTCId, bool trackChanges);
-        Task UpdatePatient(int patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges);
+        Task<Patients> GetPatientByPatientTCId(ulong patientTCId, bool trackChanges);
+        Task CreatePatient(CreatePatientDto patientDto, bool trackChanges);
+        Task DeletePatient(ulong patientTCId, bool trackChanges);
+        Task UpdatePatient(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges);
     }
 }
