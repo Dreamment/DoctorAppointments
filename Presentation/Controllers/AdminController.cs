@@ -178,4 +178,59 @@ namespace Presentation.Controllers
             return NoContent();
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminDoctorSpecialtyController : Controller
+    {
+        private readonly IAdminService _manager;
+
+        public AdminDoctorSpecialtyController(IAdminService manager)
+        {
+            _manager = manager;
+        }
+
+        [HttpGet(Name = "GetAllDoctorSpecialtiesAsync")]
+        public async Task<IActionResult> GetAllDoctorSpecialtiesAsync()
+        {
+            var doctorSpecialties = await _manager.GetAllDoctorSpecialtiesAsync(false);
+            if (doctorSpecialties == null)
+                return NotFound("There is no doctor specialty.");
+            return Ok(doctorSpecialties);
+        }
+
+        [HttpGet("{doctorSpecialtyId:int}", Name = "GetDoctorSpecialtyByDoctorSpecialtyIdAsync")]
+        public async Task<IActionResult> GetDoctorSpecialtyByDoctorSpecialtyIdAsync(int doctorSpecialtyId)
+        {
+            var doctorSpecialty = await _manager.GetDoctorSpecialtyByDoctorSpecialtyIdAsync(doctorSpecialtyId, false);
+            if (doctorSpecialty == null)
+                return NotFound("There is no doctor specialty.");
+            return Ok(doctorSpecialty);
+        }
+
+        [HttpPost(Name = "CreateDoctorSpecialtyAsync")]
+        public async Task<IActionResult> CreateDoctorSpecialtyAsync([FromBody] CreateDoctorSpecialtyDto doctorSpecialtyDto)
+        {
+            if (doctorSpecialtyDto == null)
+                return BadRequest("Doctor specialty is null.");
+            await _manager.CreateDoctorSpecialtyAsync(doctorSpecialtyDto, false);
+            return NoContent();
+        }
+
+        [HttpPut("{doctorSpecialtyId:int}", Name = "UpdateDoctorSpecialtyAsync")]
+        public async Task<IActionResult> UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, [FromBody] UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto)
+        {
+            if (updateDoctorSpecialtyDto == null)
+                return BadRequest("Doctor specialty is null.");
+            await _manager.UpdateDoctorSpecialtyAsync(doctorSpecialtyId, updateDoctorSpecialtyDto, false);
+            return NoContent();
+        }
+
+        [HttpDelete("{doctorSpecialtyId:int}", Name = "DeleteDoctorSpecialtyAsync")]
+        public async Task<IActionResult> DeleteDoctorSpecialtyAsync(int doctorSpecialtyId)
+        {
+            await _manager.DeleteDoctorSpecialtyAsync(doctorSpecialtyId, false);
+            return NoContent();
+        }
+    }
 }
