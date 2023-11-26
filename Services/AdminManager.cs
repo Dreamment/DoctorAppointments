@@ -29,13 +29,12 @@ namespace Services
         public async Task<string> CreateAppointmentMedicationAsync(CreateMedicationDto medicationDto, bool trackChanges)
         {
             var appointment = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
-                a => a.AppointmentCode == medicationDto.AppointmentCode, trackChanges);
-            if (appointment == null)
+                a => a.AppointmentCode == medicationDto.AppointmentCode, trackChanges) ?? 
                 throw new Exception("Appointment not found");
             var medication = _mapper.Map<AppointmentMedications>(medicationDto);
-            var existingMedication = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
+            var existingMedications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
                 m => m.AppointmentCode == medicationDto.AppointmentCode, trackChanges);
-            medication.MedicationCode = medicationDto.AppointmentCode + (existingMedication.Count() + 1).ToString();
+            medication.MedicationCode = medicationDto.AppointmentCode + (existingMedications.Count() + 1).ToString();
             await _repositoryManager.AppointmentMedication.CreateAppointmentMedicationAsync(medication);
             await _repositoryManager.SaveAsync();
             return medication.MedicationCode;
@@ -45,9 +44,7 @@ namespace Services
         {
             var medications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
                 m => m.MedicationCode == medicationCode, trackChanges);
-            var medication = medications.FirstOrDefault();
-            if (medication == null)
-                throw new Exception("Medication not found");
+            var medication = medications.FirstOrDefault() ?? throw new Exception("Medication not found");
             await _repositoryManager.AppointmentMedication.DeleteAppointmentMedicationAsync(medication);
             await _repositoryManager.SaveAsync();
         }
@@ -59,9 +56,7 @@ namespace Services
         {
             var medications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
                 m => m.MedicationCode == medicationCode, trackChanges);
-            var medication = medications.FirstOrDefault();
-            if (medication == null)
-                throw new Exception("Medication not found");
+            var medication = medications.FirstOrDefault() ?? throw new Exception("Medication not found");
             _mapper.Map(updateAppointmentMedicationDto, medication);
             await _repositoryManager.SaveAsync();
         }
@@ -96,9 +91,7 @@ namespace Services
         {
             var appointments = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.AppointmentCode == appointmentCode, trackChanges);
-            var appointment = appointments.FirstOrDefault();
-            if (appointment == null)
-                throw new Exception("Appointment not found");
+            var appointment = appointments.FirstOrDefault() ?? throw new Exception("Appointment not found");
             await _repositoryManager.Appointment.DeleteAppointmentAsync(appointment);
             await _repositoryManager.SaveAsync();
         }
@@ -107,16 +100,14 @@ namespace Services
         {
             var appointments = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
                 a => a.AppointmentCode == appointmentCode, trackChanges);
-            var appointment = appointments.FirstOrDefault();
-            if (appointment == null)
-                throw new Exception("Appointment not found");
+            var appointment = appointments.FirstOrDefault() ?? throw new Exception("Appointment not found");
             _mapper.Map(updateAppointmentDto, appointment);
             await _repositoryManager.SaveAsync();
         }
 
         private static string GenerateAppointmentCode()
         {
-            Random random = new Random();
+            Random random = new();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(chars, 15).Select(s => s[random.Next(s.Length)]).ToArray());
         }
@@ -143,6 +134,9 @@ namespace Services
 
         public async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges)
         {
+            var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
+                ds => ds.DoctorSpecialityId == doctorDto.DoctorSpecialityId, trackChanges) ?? 
+                throw new Exception("DoctorSpecialty not found");
             var doctor = _mapper.Map<Doctors>(doctorDto);
             doctor.DoctorCode = GenerateDoctorCode();
             while (await IsDoctorCodeExistAsync(doctor.DoctorCode, trackChanges))
@@ -158,27 +152,26 @@ namespace Services
         {
             var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
                 d => d.DoctorCode == doctorCode, trackChanges);
-            var doctor = doctors.FirstOrDefault();
-            if (doctor == null)
-                throw new Exception("Doctor not found");
+            var doctor = doctors.FirstOrDefault() ?? throw new Exception("Doctor not found");
             await _repositoryManager.Doctor.DeleteDoctorAsync(doctor);
             await _repositoryManager.SaveAsync();
         }
 
         public async Task UpdateDoctorAsync(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges)
         {
+            var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
+                ds => ds.DoctorSpecialityId == updateDoctorDto.DoctorSpecialityId, trackChanges) ?? 
+                throw new Exception("DoctorSpecialty not found");
             var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
                 d => d.DoctorCode == doctorCode, trackChanges);
-            var doctor = doctors.FirstOrDefault();
-            if (doctor == null)
-                throw new Exception("Doctor not found");
+            var doctor = doctors.FirstOrDefault() ?? throw new Exception("Doctor not found");
             _mapper.Map(updateDoctorDto, doctor);
             await _repositoryManager.SaveAsync();
         }
 
-        private string GenerateDoctorCode()
+        private static string GenerateDoctorCode()
         {
-            Random random = new Random();
+            Random random = new();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
         }
@@ -213,22 +206,27 @@ namespace Services
 
         public async Task DeleteDoctorSpecialtyAsync(int doctorSpecialtyId, bool trackChanges)
         {
+            if (doctorSpecialtyId == 1)
+                throw new Exception("Family Doctor Speacilty cannot be deleted");
+            if (doctorSpecialtyId == 2)
+                throw new Exception("Other Specialty cannot be deleted");
+
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
                 ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);
-            var doctorSpecialty = doctorSpecialties.FirstOrDefault();
-            if (doctorSpecialty == null)
-                throw new Exception("DoctorSpecialty not found");
+            var doctorSpecialty = doctorSpecialties.FirstOrDefault() ?? throw new Exception("DoctorSpecialty not found");
             await _repositoryManager.DoctorSpeciality.DeleteDoctorSpecialtyAsync(doctorSpecialty);
             await _repositoryManager.SaveAsync();
         }
 
         public async Task UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
         {
+            if (doctorSpecialtyId == 1)
+                throw new Exception("Family Doctor Speacilty cannot be updated");
+            if (doctorSpecialtyId == 2)
+                throw new Exception("Other Specialty cannot be updated");
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
-                               ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);
-            var doctorSpecialty = doctorSpecialties.FirstOrDefault();
-            if (doctorSpecialty == null)
-                throw new Exception("DoctorSpecialty not found");
+                ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);
+            var doctorSpecialty = doctorSpecialties.FirstOrDefault() ?? throw new Exception("DoctorSpecialty not found");
             _mapper.Map(updateDoctorSpecialtyDto, doctorSpecialty);
             await _repositoryManager.SaveAsync();
         }
@@ -253,7 +251,7 @@ namespace Services
         {
             var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
                 p => p.PatientTCId == patientTCId, trackChanges);
-            return patients.FirstOrDefault();
+            return patients.FirstOrDefault() == null ? throw new Exception("Patient not found") : patients.FirstOrDefault();
         }
 
         public async Task CreatePatientAsync(CreatePatientDto patientDto, bool trackChanges)
@@ -267,16 +265,56 @@ namespace Services
         {
             var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
                 p => p.PatientTCId == patientTCId, trackChanges);
-            var patient = patients.FirstOrDefault();
+            var patient = patients.FirstOrDefault() ?? throw new Exception("Patient not found");
             await _repositoryManager.Patient.DeletePatientAsync(patient);
             await _repositoryManager.SaveAsync();
         }
 
         public async Task UpdatePatientAsync(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges)
         {
+
             var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
                 p => p.PatientTCId == patientTCId, trackChanges);
-            var patient = patients.FirstOrDefault();
+            var patient = patients.FirstOrDefault() ?? throw new Exception("Patient not found");
+            DateTime dateNow = DateTime.Now;
+            updatePatientDto.PatientFamilyDoctorAppointDate = dateNow;
+
+            // if old family doctor is null
+            if (patient.PatientFamilyDoctorCode == null)
+            {
+                // if new family doctor is not null
+                if (updatePatientDto.PatientFamilyDoctorCode != null)
+                {
+                    await _repositoryManager.FamilyDoctorChanges.CreateFamilyDoctorChangeAsync(
+                        new FamilyDoctorChanges
+                        {
+                            PatientTCId = patientTCId,
+                            PreviousFamilyDoctorCode = patient.PatientFamilyDoctorCode,
+                            NewFamilyDoctorCode = null,
+                            ChangeDate = dateNow,
+                        });
+                }
+            }
+            // if old family doctor is not null
+            else
+            {
+                // if new family doctor is not null
+                if (updatePatientDto.PatientFamilyDoctorCode != null)
+                {
+                    // if old family doctor is not equal to new family doctor
+                    if (patient.PatientFamilyDoctorCode != updatePatientDto.PatientFamilyDoctorCode)
+                    {
+                        await _repositoryManager.FamilyDoctorChanges.CreateFamilyDoctorChangeAsync(
+                            new FamilyDoctorChanges
+                            {
+                                PatientTCId = patientTCId,
+                                PreviousFamilyDoctorCode = patient.PatientFamilyDoctorCode,
+                                NewFamilyDoctorCode = updatePatientDto.PatientFamilyDoctorCode,
+                                ChangeDate = dateNow
+                            });
+                    }
+                }
+            }
             _mapper.Map(updatePatientDto, patient);
             await _repositoryManager.SaveAsync();
         }
