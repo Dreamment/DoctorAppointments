@@ -272,4 +272,59 @@ namespace Presentation.Controllers
             return Ok(familyDoctorChanges);
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminPatientController : Controller
+    {
+        private readonly IAdminService _manager;
+
+        public AdminPatientController(IAdminService manager)
+        {
+            _manager = manager;
+        }
+
+        [HttpGet(Name = "GetAllPatientsAsync")]
+        public async Task<IActionResult> GetAllPatientsAsync()
+        {
+            var patients = await _manager.GetAllPatientsAsync(false);
+            if (patients == null)
+                return NotFound("There is no patient.");
+            return Ok(patients);
+        }
+
+        [HttpGet("{patientTCId:int}", Name = "GetPatientByPatientTCIdAsync")]
+        public async Task<IActionResult> GetPatientByPatientTCIdAsync(ulong patientTCId)
+        {
+            var patient = await _manager.GetPatientByPatientTCIdAsync(patientTCId, false);
+            if (patient == null)
+                return NotFound("There is no patient.");
+            return Ok(patient);
+        }
+
+        [HttpPost(Name = "CreatePatientAsync")]
+        public async Task<IActionResult> CreatePatientAsync([FromBody] CreatePatientDto patientDto)
+        {
+            if (patientDto == null)
+                return BadRequest("Patient is null.");
+            await _manager.CreatePatientAsync(patientDto, false);
+            return NoContent();
+        }
+
+        [HttpPut("{patientTCId:int}", Name = "UpdatePatientAsync")]
+        public async Task<IActionResult> UpdatePatientAsync(ulong patientTCId, [FromBody] UpdatePatientDto updatePatientDto)
+        {
+            if (updatePatientDto == null)
+                return BadRequest("Patient is null.");
+            await _manager.UpdatePatientAsync(patientTCId, updatePatientDto, false);
+            return NoContent();
+        }
+
+        [HttpDelete("{patientTCId:int}", Name = "DeletePatientAsync")]
+        public async Task<IActionResult> DeletePatientAsync(ulong patientTCId)
+        {
+            await _manager.DeletePatientAsync(patientTCId, false);
+            return NoContent();
+        }
+    }
 }
