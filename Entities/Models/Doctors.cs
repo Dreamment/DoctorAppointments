@@ -25,6 +25,6 @@ namespace Entities.Models
         [Required]
         public virtual DoctorSpecialties DoctorSpeciality { get; set; }
         
-        public virtual ICollection<Appointments>? Appointments { get; set; }
+        public virtual IEnumerable<Appointments>? Appointments { get; set; }
     }
 }
