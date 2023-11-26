@@ -8,5 +8,7 @@ namespace Entities.DataTransferObjects.Create
         public ulong PatientTCId { get; set; }
         [Required]
         public string DoctorCode { get; set; }
+        [Required]
+        public DateTime AppointmentDateTime { get; set; }
     }
 }
