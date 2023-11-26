@@ -18,6 +18,7 @@ builder.Services.AddDbContext<RepositoryContext>(options =>
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IDoctorService, DoctorManager>();
 builder.Services.AddScoped<IPatientService, PatientManager>();
+builder.Services.AddScoped<IAdminService, AdminManager>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
