@@ -7,6 +7,7 @@ namespace Entities.Models
     public class Patients
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public ulong PatientTCId { get; set; }
 
         [Required]

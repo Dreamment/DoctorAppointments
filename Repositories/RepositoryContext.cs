@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repositories.Config;
 
 namespace Repositories
 {
@@ -19,6 +20,8 @@ namespace Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new DoctorSpecialityConfig());
+
             modelBuilder.Entity<Appointments>()
                 .Property(a => a.PatientTCId)
                 .HasColumnType("bigint");
