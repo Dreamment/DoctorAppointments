@@ -123,4 +123,59 @@ namespace Presentation.Controllers
             return NoContent();
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminDoctorController : Controller
+    {
+        private readonly IAdminService _manager;
+
+        public AdminDoctorController(IAdminService manager)
+        {
+            _manager = manager;
+        }
+
+        [HttpGet(Name = "GetAllDoctorsAsync")]
+        public async Task<IActionResult> GetAllDoctorsAsync()
+        {
+            var doctors = await _manager.GetAllDoctorsAsync(false);
+            if (doctors == null)
+                return NotFound("There is no doctor.");
+            return Ok(doctors);
+        }
+
+        [HttpGet("{doctorCode}", Name = "GetDoctorByDoctorCodeAsync")]
+        public async Task<IActionResult> GetDoctorByDoctorCodeAsync(string doctorCode)
+        {
+            var doctor = await _manager.GetDoctorByDoctorCodeAsync(doctorCode, false);
+            if (doctor == null)
+                return NotFound("There is no doctor.");
+            return Ok(doctor);
+        }
+
+        [HttpPost(Name = "CreateDoctorAsync")]
+        public async Task<IActionResult> CreateDoctorAsync([FromBody] CreateDoctorDto doctorDto)
+        {
+            if (doctorDto == null)
+                return BadRequest("Doctor is null.");
+            var doctorCode = await _manager.CreateDoctorAsync(doctorDto, false);
+            return CreatedAtRoute("GetAllDoctorsAsync", new { doctorCode }, doctorCode);
+        }
+
+        [HttpPut("{doctorCode}", Name = "UpdateDoctorAsync")]
+        public async Task<IActionResult> UpdateDoctorAsync(string doctorCode, [FromBody] UpdateDoctorDto updateDoctorDto)
+        {
+            if (updateDoctorDto == null)
+                return BadRequest("Doctor is null.");
+            await _manager.UpdateDoctorAsync(doctorCode, updateDoctorDto, false);
+            return NoContent();
+        }
+
+        [HttpDelete("{doctorCode}", Name = "DeleteDoctorAsync")]
+        public async Task<IActionResult> DeleteDoctorAsync(string doctorCode)
+        {
+            await _manager.DeleteDoctorAsync(doctorCode, false);
+            return NoContent();
+        }
+    }
 }
