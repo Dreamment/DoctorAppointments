@@ -22,7 +22,7 @@ namespace Presentation.Controllers
             try
             {
                 var appointments = await _manager.GetAllAppointmentsAsync(false);
-                if (appointments == null)
+                if (appointments.Count() == 0)
                     return NotFound("There is no appointment.");
                 return Ok(appointments);
             }
@@ -38,7 +38,7 @@ namespace Presentation.Controllers
             try
             {
                 var appointments = await _manager.GetAppointmentsByDoctorCodeAsync(doctorCode, false);
-                if (appointments == null)
+                if (appointments.Count() == 0)
                     return NotFound("There is no appointment.");
                 return Ok(appointments);
             }
@@ -48,13 +48,13 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("PatientCode/{patientTCId:int}", Name = "GetAppointmentsByPatientTCIdAsync")]
+        [HttpGet("PatientTCId/{patientTCId:int}", Name = "GetAppointmentsByPatientTCIdAsync")]
         public async Task<IActionResult> GetAppointmentsByPatientTCIdAsync(ulong patientTCId)
         {
             try
             {
                 var appointments = await _manager.GetAppointmentsByPatientTCIdAsync(patientTCId, false);
-                if (appointments == null)
+                if (appointments.Count() == 0)
                     return NotFound("There is no appointment.");
                 return Ok(appointments);
             }
@@ -128,7 +128,7 @@ namespace Presentation.Controllers
             try
             {
                 var medications = await _manager.GetAllAppointmentMedicationsAsync(false);
-                if (medications == null)
+                if (medications.Count() == 0)
                     return NotFound("There is no medication.");
                 return Ok(medications);
             }
@@ -144,7 +144,7 @@ namespace Presentation.Controllers
             try
             {
                 var medications = await _manager.GetAppointmentMedicationsByAppointmentCodeAsync(appointmentCode, false);
-                if (medications == null)
+                if (medications.Count() == 0)
                     return NotFound("There is no medication.");
                 return Ok(medications);
             }
@@ -218,7 +218,7 @@ namespace Presentation.Controllers
             try
             {
                 var doctors = await _manager.GetAllDoctorsAsync(false);
-                if (doctors == null)
+                if (doctors.Count() == 0)
                     return NotFound("There is no doctor.");
                 return Ok(doctors);
             }
@@ -308,7 +308,7 @@ namespace Presentation.Controllers
             try
             {
                 var doctorSpecialties = await _manager.GetAllDoctorSpecialtiesAsync(false);
-                if (doctorSpecialties == null)
+                if (doctorSpecialties.Count() == 0)
                     return NotFound("There is no doctor specialty.");
                 return Ok(doctorSpecialties);
             }
@@ -398,7 +398,7 @@ namespace Presentation.Controllers
             try
             {
                 var familyDoctorChanges = await _manager.GetAllFamilyDoctorChangesAsync(false);
-                if (familyDoctorChanges == null)
+                if (familyDoctorChanges.Count() == 0)
                     return NotFound("There is no family doctor change.");
                 return Ok(familyDoctorChanges);
             }
@@ -408,13 +408,13 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("{PatientTCId:int}", Name = "GetFamilyDoctorChangesPatientTCIdAsync")]
+        [HttpGet("PatientTCId/{PatientTCId:int}", Name = "GetFamilyDoctorChangesPatientTCIdAsync")]
         public async Task<IActionResult> GetFamilyDoctorChangesPatientTCIdAsync(ulong patientTCId)
         {
             try
             {
                 var familyDoctorChanges = await _manager.GetFamilyDoctorChangesByPatientTCIdAsync(patientTCId, false);
-                if (familyDoctorChanges == null)
+                if (familyDoctorChanges.Count() == 0)
                     return NotFound("There is no family doctor change.");
                 return Ok(familyDoctorChanges);
             }
@@ -424,13 +424,13 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("{DoctorCode}", Name = "GetFamilyDoctorChangesDoctorCodeAsync")]
+        [HttpGet("DoctorCode/{DoctorCode}", Name = "GetFamilyDoctorChangesDoctorCodeAsync")]
         public async Task<IActionResult> GetFamilyDoctorChangesDoctorCodeAsync(string doctorCode)
         {
             try
             {
                 var familyDoctorChanges = await _manager.GetFamilyDoctorChangesByDoctorCodeAsync(doctorCode, false);
-                if (familyDoctorChanges == null)
+                if (familyDoctorChanges.Count() == 0)
                     return NotFound("There is no family doctor change.");
                 return Ok(familyDoctorChanges);
             }
@@ -458,7 +458,7 @@ namespace Presentation.Controllers
             try
             {
                 var patients = await _manager.GetAllPatientsAsync(false);
-                if (patients == null)
+                if (patients.Count() == 0)
                     return NotFound("There is no patient.");
                 return Ok(patients);
             }

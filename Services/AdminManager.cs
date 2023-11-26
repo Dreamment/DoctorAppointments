@@ -58,6 +58,7 @@ namespace Services
                 m => m.MedicationCode == medicationCode, trackChanges);
             var medication = medications.FirstOrDefault() ?? throw new Exception("Medication not found");
             _mapper.Map(updateAppointmentMedicationDto, medication);
+            await _repositoryManager.AppointmentMedication.UpdateAppointmentMedicationAsync(medication);
             await _repositoryManager.SaveAsync();
         }
 
@@ -76,7 +77,6 @@ namespace Services
         public async Task<string> CreateAppointmentAsync(CreateAppointmentDto appointmentDto, bool trackChanges)
         {
             var appointment = _mapper.Map<Appointments>(appointmentDto);
-            appointment.AppointmentDateTime = DateTime.Now;
             appointment.AppointmentCode = GenerateAppointmentCode();
             while (await IsAppointmentCodeExistAsync(appointment.AppointmentCode, trackChanges))
             {
@@ -102,6 +102,7 @@ namespace Services
                 a => a.AppointmentCode == appointmentCode, trackChanges);
             var appointment = appointments.FirstOrDefault() ?? throw new Exception("Appointment not found");
             _mapper.Map(updateAppointmentDto, appointment);
+            await _repositoryManager.Appointment.UpdateAppointmentAsync(appointment);
             await _repositoryManager.SaveAsync();
         }
 
@@ -166,6 +167,7 @@ namespace Services
                 d => d.DoctorCode == doctorCode, trackChanges);
             var doctor = doctors.FirstOrDefault() ?? throw new Exception("Doctor not found");
             _mapper.Map(updateDoctorDto, doctor);
+            await _repositoryManager.Doctor.UpdateDoctorAsync(doctor);
             await _repositoryManager.SaveAsync();
         }
 
@@ -228,6 +230,7 @@ namespace Services
                 ds => ds.DoctorSpecialityId == doctorSpecialtyId, trackChanges);
             var doctorSpecialty = doctorSpecialties.FirstOrDefault() ?? throw new Exception("DoctorSpecialty not found");
             _mapper.Map(updateDoctorSpecialtyDto, doctorSpecialty);
+            await _repositoryManager.DoctorSpeciality.UpdateDoctorSpecialtyAsync(doctorSpecialty);
             await _repositoryManager.SaveAsync();
         }
 
@@ -316,6 +319,7 @@ namespace Services
                 }
             }
             _mapper.Map(updatePatientDto, patient);
+            await _repositoryManager.Patient.UpdatePatientAsync(patient);
             await _repositoryManager.SaveAsync();
         }
     }
