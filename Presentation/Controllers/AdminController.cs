@@ -68,4 +68,59 @@ namespace Presentation.Controllers
             return NoContent();
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminMedicationController : Controller
+    {
+        private readonly IAdminService _manager;
+
+        public AdminMedicationController(IAdminService manager)
+        {
+            _manager = manager;
+        }
+
+        [HttpGet(Name = "GetAllMedicationsAsync")]
+        public async Task<IActionResult> GetAllMedicationsAsync()
+        {
+            var medications = await _manager.GetAllAppointmentMedicationsAsync(false);
+            if (medications == null)
+                return NotFound("There is no medication.");
+            return Ok(medications);
+        }
+
+        [HttpGet("{appointmentCode}", Name = "GetMedicationByAppointmentCodeAsync")]
+        public async Task<IActionResult> GetMedicationByAppointmentCodeAsync(string appointmentCode)
+        {
+            var medications = await _manager.GetAppointmentMedicationsByAppointmentCodeAsync(appointmentCode, false);
+            if (medications == null)
+                return NotFound("There is no medication.");
+            return Ok(medications);
+        }
+
+        [HttpPost(Name = "CreateMedicationAsync")]
+        public async Task<IActionResult> CreateMedicationAsync([FromBody] CreateMedicationDto medicationDto)
+        {
+            if (medicationDto == null)
+                return BadRequest("Medication is null.");
+            var medicationCode = await _manager.CreateAppointmentMedicationAsync(medicationDto, false);
+            return CreatedAtRoute("GetAllMedicationsAsync", new { medicationCode }, medicationCode);
+        }
+
+        [HttpPut("{medicationCode}", Name = "UpdateMedicationAsync")]
+        public async Task<IActionResult> UpdateMedicationAsync(string medicationCode, [FromBody] UpdateAppointmentMedicationDto updateAppointmentMedicationDto)
+        {
+            if (updateAppointmentMedicationDto == null)
+                return BadRequest("Medication is null.");
+            await _manager.UpdateAppointmentMedicationAsync(medicationCode, updateAppointmentMedicationDto, false);
+            return NoContent();
+        }
+
+        [HttpDelete("{medicationCode}", Name = "DeleteMedicationAsync")]
+        public async Task<IActionResult> DeleteMedicationAsync(string medicationCode)
+        {
+            await _manager.DeleteAppointmentMedicationAsync(medicationCode, false);
+            return NoContent();
+        }
+    }
 }
