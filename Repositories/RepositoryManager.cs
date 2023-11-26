@@ -4,48 +4,26 @@ namespace Repositories
 {
     public class RepositoryManager : IRepositoryManager
     {
-        private RepositoryContext _repositoryContext;
+        private readonly RepositoryContext _repositoryContext;
 
-        private Lazy<IAppointmentMedicationRepository> _appointmentMedicationRepository;
-        private Lazy<IAppointmentRepository> _appointmentRepository;
-        private Lazy<IDoctorRepository> _doctorRepository;
-        private Lazy<IDoctorSpecialityRepository> _doctorSpecialityRepository;
-        private Lazy<IFamilyDoctorChangesRepository> _familyDoctorChangesRepository;
-        private Lazy<IPatientRepository> _patientRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
-            _appointmentMedicationRepository = new Lazy<IAppointmentMedicationRepository>(() 
-                => new AppointmentMedicationRepository(_repositoryContext));
 
-            _appointmentRepository = new Lazy<IAppointmentRepository>(()
-                => new AppointmentRepository(_repositoryContext));
-
-            _doctorRepository = new Lazy<IDoctorRepository>(()
-                => new DoctorRepository(_repositoryContext));
-
-            _doctorSpecialityRepository = new Lazy<IDoctorSpecialityRepository>(()
-                => new DoctorSpecialityRepository(_repositoryContext));
-
-            _familyDoctorChangesRepository = new Lazy<IFamilyDoctorChangesRepository>(()
-                => new FamilyDoctorChangesRepository(_repositoryContext));
-
-            _patientRepository = new Lazy<IPatientRepository>(()
-                => new PatientRepository(_repositoryContext));
+            AppointmentMedication = new AppointmentMedicationRepository(_repositoryContext);
+            Appointment = new AppointmentRepository(_repositoryContext);
+            Doctor = new DoctorRepository(_repositoryContext);
+            DoctorSpeciality = new DoctorSpecialityRepository(_repositoryContext);
+            FamilyDoctorChanges = new FamilyDoctorChangesRepository(_repositoryContext);
+            Patient = new PatientRepository(_repositoryContext);
         }
 
-        public IAppointmentMedicationRepository AppointmentMedication
-            => _appointmentMedicationRepository.Value;
-        public IAppointmentRepository Appointment
-            => _appointmentRepository.Value;
-        public IDoctorRepository Doctor
-            => _doctorRepository.Value;
-        public IDoctorSpecialityRepository DoctorSpeciality
-            => _doctorSpecialityRepository.Value;
-        public IFamilyDoctorChangesRepository FamilyDoctorChanges
-            => _familyDoctorChangesRepository.Value;
-        public IPatientRepository Patient
-            => _patientRepository.Value;
+        public IAppointmentMedicationRepository AppointmentMedication { get; }
+        public IAppointmentRepository Appointment { get; }
+        public IDoctorRepository Doctor { get; }
+        public IDoctorSpecialityRepository DoctorSpeciality { get; }
+        public IFamilyDoctorChangesRepository FamilyDoctorChanges { get; }
+        public IPatientRepository Patient { get; }
 
         public async Task SaveAsync()
             => await _repositoryContext.SaveChangesAsync();

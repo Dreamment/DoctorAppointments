@@ -123,8 +123,9 @@ namespace Services
         }
 
         // Doctors
+        // eager loading
         public async Task<IEnumerable<Doctors>> GetAllDoctorsAsync(bool trackChanges)
-            => await _repositoryManager.Doctor.GetAllDoctorsAsync(trackChanges);
+            => await _repositoryManager.Doctor.GetAllDoctorsWithDetailsAsync(trackChanges, d => d.DoctorSpeciality, d => d.Appointments);
 
         public async Task<Doctors> GetDoctorByDoctorCodeAsync(string doctorCode, bool trackChanges)
         {
@@ -133,6 +134,7 @@ namespace Services
             return doctors.FirstOrDefault();
         }
 
+        // lazy loading
         public async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
@@ -182,7 +184,7 @@ namespace Services
         {
             var doctor = await _repositoryManager.Doctor
                 .GetDoctorsByConditionAsync(d => d.DoctorCode == doctorCode, trackChanges);
-            if (doctor == null)
+            if (!doctor.Any())
                 return false;
             return true;
 

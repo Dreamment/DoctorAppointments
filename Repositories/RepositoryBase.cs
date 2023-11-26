@@ -31,5 +31,20 @@ namespace Repositories
 
         public async Task UpdateAsync(T entity)
             => await Task.FromResult(_context.Set<T>().Update(entity));
+
+        public async Task<IEnumerable<T>> FindAllWithDetailsAsync(bool trackChanges, params Expression<Func<T, object>>[] includes)
+        {
+            var query = _context.Set<T>().AsNoTracking().AsQueryable();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return !trackChanges ? await query.AsNoTracking().ToListAsync() : await query.ToListAsync();
+            /*
+            return !trackChanges ?
+                    await _context.Set<T>().AsNoTracking().Include(nameof(Doctors)).ToListAsync() :
+                    await _context.Set<T>().Where(expression).Include(nameof(Doctors)).ToListAsync();
+            */
+        }
     }
 }

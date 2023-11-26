@@ -24,5 +24,7 @@ namespace Repositories
 
         public Task UpdateDoctorAsync(Doctors doctor)
             => UpdateAsync(doctor);
+        public async Task<IEnumerable<Doctors>> GetAllDoctorsWithDetailsAsync(bool trackChanges, params Expression<Func<Doctors, object>>[] includes)
+            => await FindAllWithDetailsAsync(trackChanges, includes);
     }
 }

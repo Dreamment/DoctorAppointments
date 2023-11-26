@@ -10,5 +10,6 @@ namespace Repositories.Contracts
         Task CreateDoctorAsync(Doctors doctor);
         Task DeleteDoctorAsync(Doctors doctor);
         Task UpdateDoctorAsync(Doctors doctor);
+        Task<IEnumerable<Doctors>> GetAllDoctorsWithDetailsAsync(bool trackChanges, params Expression<Func<Doctors, object>>[] includes);
     }
 }

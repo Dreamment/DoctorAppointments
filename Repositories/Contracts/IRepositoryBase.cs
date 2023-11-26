@@ -13,5 +13,7 @@ namespace Repositories.Contracts
         Task DeleteAsync(T entity);
 
         Task UpdateAsync(T entity);
+
+        Task<IEnumerable<T>> FindAllWithDetailsAsync(bool trackChanges, params Expression<Func<T, object>>[] includes);
     }
 }
