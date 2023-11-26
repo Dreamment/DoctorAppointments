@@ -40,6 +40,10 @@ namespace Repositories
 
             modelBuilder.Entity<FamilyDoctorChanges>()
                 .Property(f => f.PreviousFamilyDoctorCode)
+                .IsRequired(false); 
+
+            modelBuilder.Entity<FamilyDoctorChanges>()
+                .Property(f => f.NewFamilyDoctorCode)
                 .IsRequired(false);
 
             modelBuilder.Entity<Patients>()

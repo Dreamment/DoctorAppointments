@@ -18,10 +18,10 @@ namespace Entities.Models
         [MaxLength(10), MinLength(10)]
         public string? PreviousFamilyDoctorCode { get; set; }
 
-        [Required]
+        [AllowNull]
         [ForeignKey("NewFamilyDoctor")]
         [MaxLength(10), MinLength(10)]
-        public string NewFamilyDoctorCode { get; set; }
+        public string? NewFamilyDoctorCode { get; set; }
 
         [Required]
         public DateTime ChangeDate { get; set; }
