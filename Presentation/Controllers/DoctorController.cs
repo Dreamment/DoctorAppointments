@@ -21,7 +21,7 @@ namespace DoctorAppointmentsAPI.Controllers
         public async Task<IActionResult> GetPatientsAsync([FromRoute(Name = "doctorCode")] string doctorCode)
         {
             var patients = await _manager.GetPatientsAsync(doctorCode, false);
-            if (patients == null)
+            if (patients.Count() == 0)
                 return NotFound("You don't have any patient.");
             return Ok(patients);
         }
@@ -30,7 +30,7 @@ namespace DoctorAppointmentsAPI.Controllers
         public async Task<IActionResult> GetPastAppointmentsAsync([FromRoute(Name = "doctorCode")] string doctorCode)
         {
             var appointments = await _manager.GetPastAppointmentsAsync(doctorCode, false);
-            if (appointments == null)
+            if (appointments.Count() == 0)
                 return NotFound("You don't have any past appointment.");
             return Ok(appointments);
         }
@@ -39,7 +39,7 @@ namespace DoctorAppointmentsAPI.Controllers
         public async Task<IActionResult> GetTodaysAppointmentsAsync([FromRoute(Name = "doctorCode")] string doctorCode)
         {
             var appointments = await _manager.GetTodaysAppointmentsAsync(doctorCode, false);
-            if (appointments == null)
+            if (appointments.Count() == 0)
                 return NotFound("You don't have any appointment today.");
             return Ok(appointments);
         }
@@ -48,7 +48,7 @@ namespace DoctorAppointmentsAPI.Controllers
         public async Task<IActionResult> GetUpcomingAppointmentsAsync([FromRoute(Name = "doctorCode")] string doctorCode)
         {
             var appointments = await _manager.GetUpcomingAppointmentsAsync(doctorCode, false);
-            if (appointments == null)
+            if (appointments.Count() == 0)
                 return NotFound("You don't have any upcoming appointment.");
             return Ok(appointments);
         }
@@ -61,21 +61,15 @@ namespace DoctorAppointmentsAPI.Controllers
         }
 
         [HttpPatch("ChangeAppointmentStatus/{doctorCode}/{appointmentCode}", Name = "ChangeAppointmentStatusAsync")]
-        public async Task<IActionResult> ChangeAppointmentStatusAsync([FromRoute(Name = "doctorId")] string doctorCode,[FromRoute(Name = "appointmentCode")] string appointmentCode, [FromBody] JsonPatchDocument<PartiallyUpdateAppointmentForDoctorDto> jsonPatch)
+        public async Task<IActionResult> ChangeAppointmentStatusAsync([FromRoute(Name = "doctorCode")] string doctorCode,[FromRoute(Name = "appointmentCode")] string appointmentCode, [FromBody] JsonPatchDocument<PartiallyUpdateAppointmentForDoctorDto> jsonPatch)
         {
-            if(jsonPatch.Operations.Any(op => op.path.Equals("status", StringComparison.OrdinalIgnoreCase)))
+            var status = jsonPatch.Operations.FirstOrDefault().value.ToString();
+            if (string.Equals(status, "true", StringComparison.OrdinalIgnoreCase) || string.Equals(status, "false", StringComparison.OrdinalIgnoreCase))
             {
-                if (jsonPatch.Operations.Count() > 1)
-                    return BadRequest("You can only update the status of the appointment.");
-                var status = jsonPatch.Operations.FirstOrDefault().value.ToString();
-                if (string.Equals(status, "true", StringComparison.OrdinalIgnoreCase) || string.Equals(status, "false", StringComparison.OrdinalIgnoreCase))
-                {
-                    await _manager.ChangeAppointmentStatus(doctorCode, appointmentCode, jsonPatch, false);
-                    return NoContent();
-                }
-                return BadRequest("The status can only be true or false.");
+                await _manager.ChangeAppointmentStatus(doctorCode, appointmentCode, jsonPatch, false);
+                return NoContent();
             }
-            return BadRequest("You can only update the status of the appointment.");
+            return BadRequest("The status can only be true or false.");
         }
 
     }
