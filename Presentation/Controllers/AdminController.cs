@@ -233,4 +233,43 @@ namespace Presentation.Controllers
             return NoContent();
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminFamilyDoctorChangesController : Controller
+    {
+        private readonly IAdminService _manager;
+
+        public AdminFamilyDoctorChangesController(IAdminService manager)
+        {
+            _manager = manager;
+        }
+
+        [HttpGet(Name = "GetAllFamilyDoctorChangesAsync")]
+        public async Task<IActionResult> GetAllFamilyDoctorChangesAsync()
+        {
+            var familyDoctorChanges = await _manager.GetAllFamilyDoctorChangesAsync(false);
+            if (familyDoctorChanges == null)
+                return NotFound("There is no family doctor change.");
+            return Ok(familyDoctorChanges);
+        }
+
+        [HttpGet("{PatientTCId:int}", Name = "GetFamilyDoctorChangesPatientTCIdAsync")]
+        public async Task<IActionResult> GetFamilyDoctorChangesPatientTCIdAsync(ulong patientTCId)
+        {
+            var familyDoctorChanges = await _manager.GetFamilyDoctorChangesByPatientTCIdAsync(patientTCId, false);
+            if (familyDoctorChanges == null)
+                return NotFound("There is no family doctor change.");
+            return Ok(familyDoctorChanges);
+        }
+
+        [HttpGet("{DoctorCode}", Name = "GetFamilyDoctorChangesDoctorCodeAsync")]
+        public async Task<IActionResult> GetFamilyDoctorChangesDoctorCodeAsync(string doctorCode)
+        {
+            var familyDoctorChanges = await _manager.GetFamilyDoctorChangesByDoctorCodeAsync(doctorCode, false);
+            if (familyDoctorChanges == null)
+                return NotFound("There is no family doctor change.");
+            return Ok(familyDoctorChanges);
+        }
+    }
 }
