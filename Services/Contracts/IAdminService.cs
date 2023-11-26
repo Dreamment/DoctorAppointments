@@ -36,12 +36,9 @@ namespace Services.Contracts
         Task UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges);
 
         // FamilyDoctorChanges
-
         Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChangesAsync(bool trackChanges);
         Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCIdAsync(ulong patientTCId, bool trackChanges);
         Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCodeAsync(string doctorCode, bool trackChanges);
-        Task CreateFamilyDoctorChangeAsync(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges);
-        Task DeleteFamilyDoctorChangeAsync(int changeId, bool trackChanges);
 
         // Patients
 

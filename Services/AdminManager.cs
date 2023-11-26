@@ -245,22 +245,6 @@ namespace Services
             => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
                 fdc => fdc.NewFamilyDoctorCode == doctorCode || fdc.PreviousFamilyDoctorCode == doctorCode, trackChanges);
 
-        public async Task CreateFamilyDoctorChangeAsync(CreateFamilyDoctorChangeDto familyDoctorChangeDto, bool trackChanges)
-        {
-            var familyDoctorChange = _mapper.Map<FamilyDoctorChanges>(familyDoctorChangeDto);
-            await _repositoryManager.FamilyDoctorChanges.CreateFamilyDoctorChangeAsync(familyDoctorChange);
-            await _repositoryManager.SaveAsync();
-        }
-
-        public async Task DeleteFamilyDoctorChangeAsync(int changeId, bool trackChanges)
-        {
-            var familyDoctorChanges = await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
-                fdc => fdc.ChangeId == changeId, trackChanges);
-            var familyDoctorChange = familyDoctorChanges.FirstOrDefault();
-            await _repositoryManager.FamilyDoctorChanges.DeleteFamilyDoctorChangeAsync(familyDoctorChange);
-            await _repositoryManager.SaveAsync();
-        }
-
         // Patients
         public async Task<IEnumerable<Patients>> GetAllPatientsAsync(bool trackChanges)
             => await _repositoryManager.Patient.GetAllPatientsAsync(trackChanges);

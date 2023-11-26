@@ -26,7 +26,6 @@ namespace DoctorAppointmentsAPI.AutoMapper
             CreateMap<UpdateDoctorDto, Doctors>();
             CreateMap<CreateDoctorSpecialtyDto, DoctorSpecialties>();
             CreateMap<UpdateDoctorSpecialtyDto, DoctorSpecialties>();
-            CreateMap<CreateFamilyDoctorChangeDto, FamilyDoctorChanges>();
             CreateMap<CreatePatientDto, Patients>();
             CreateMap<UpdatePatientDto, Patients>();
         }
