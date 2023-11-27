@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities.DataTransferObjects.Auth;
 using Entities.DataTransferObjects.Create;
 using Entities.DataTransferObjects.Get;
 using Entities.DataTransferObjects.Update;
@@ -28,6 +29,7 @@ namespace DoctorAppointmentsAPI.AutoMapper
             CreateMap<UpdateDoctorSpecialtyDto, DoctorSpecialties>();
             CreateMap<CreatePatientDto, Patients>();
             CreateMap<UpdatePatientDto, Patients>();
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }
