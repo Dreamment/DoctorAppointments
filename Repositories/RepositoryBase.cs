@@ -26,7 +26,7 @@ namespace Repositories
 
         public async Task<IEnumerable<T>> FindAllWithDetailsAsync(bool trackChanges, params Expression<Func<T, object>>[] includes)
         {
-            var query = _context.Set<T>().AsNoTracking().AsQueryable();
+            var query = _context.Set<T>().AsQueryable();
             foreach (var include in includes)
             {
                 query = query.Include(include);
@@ -42,7 +42,7 @@ namespace Repositories
 
         public async Task<IEnumerable<T>> FindByConditionWithDetailsAsync(Expression<Func<T, bool>> expression, bool trackChanges, params Expression<Func<T, object>>[] includes)
         {
-            var query = _context.Set<T>().Where(expression).AsNoTracking().AsQueryable();
+            var query = _context.Set<T>().Where(expression).AsQueryable();
             foreach (var include in includes)
             {
                 query = query.Include(include);
