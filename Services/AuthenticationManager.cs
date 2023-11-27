@@ -15,6 +15,7 @@ namespace Services
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        private User? _user;
         public AuthenticationManager(
             IMapper mapper,
             UserManager<User> userManager,
@@ -48,6 +49,16 @@ namespace Services
 
             if (result.Succeeded)
                 await _userManager.AddToRoleAsync(user, userForRegistrationDto.Role);
+            return result;
+        }
+
+        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)
+        {
+            _user = await _userManager.FindByNameAsync(userForAuthenticationDto.Username);
+            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthenticationDto.Password));
+
+            if (!result)
+                throw new Exception("Username or password is incorrect");
             return result;
         }
     }
