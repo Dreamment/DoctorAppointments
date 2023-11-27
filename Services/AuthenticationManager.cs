@@ -2,6 +2,7 @@
 using Entities.DataTransferObjects.Auth;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Services.Contracts;
 
@@ -29,8 +30,13 @@ namespace Services
         public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
         {
             // check is role exist in db
-            if (!await _roleManager.RoleExistsAsync(userForRegistrationDto.Role))
-                throw new Exception($"Role {userForRegistrationDto.Role} does not exist in the database");
+            var roles = await _roleManager.Roles.ToListAsync();
+            var normalizedNames = roles.Select(r =>r.NormalizedName).ToList();
+            var role = userForRegistrationDto.Role.ToUpper();
+            if (!normalizedNames.Contains(role))
+                throw new Exception($"Role {role} does not exist");
+            else
+                userForRegistrationDto.Role = roles.FirstOrDefault(r => r.NormalizedName == role).Name;
 
             // check is user exist in db
             if (await _userManager.FindByNameAsync(userForRegistrationDto.UserName) != null)
