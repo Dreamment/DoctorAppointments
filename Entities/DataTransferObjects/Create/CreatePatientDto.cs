@@ -6,6 +6,7 @@ namespace Entities.DataTransferObjects.Create
     public class CreatePatientDto
     {
         [Required]
+        [RegularExpression(@"^[0-9]{11}$", ErrorMessage = "PatientTCId must be 11 digits")]
         public ulong PatientTCId { get; set; }
 
         [Required]
@@ -26,8 +27,5 @@ namespace Entities.DataTransferObjects.Create
         [AllowNull]
         [MaxLength(10), MinLength(10)]
         public string? PatientFamilyDoctorCode { get; set; }
-
-        [AllowNull]
-        public DateTime? PatientFamilyDoctorAppointDate { get; set; }
     }
 }
