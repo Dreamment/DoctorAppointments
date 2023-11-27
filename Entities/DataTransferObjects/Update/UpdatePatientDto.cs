@@ -14,7 +14,5 @@ namespace Entities.DataTransferObjects.Update
         public DateTime? PatientBirthDate { get; set; }
         [AllowNull]
         public string? PatientFamilyDoctorCode { get; set; }
-        [AllowNull]
-        public DateTime? PatientFamilyDoctorAppointDate { get; set; }
     }
 }
