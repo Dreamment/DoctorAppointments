@@ -3,6 +3,8 @@ using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
 using Services;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace DoctorAppointmentsAPI.Extensions
 {
@@ -18,6 +20,21 @@ namespace DoctorAppointmentsAPI.Extensions
             services.AddScoped<IDoctorService, DoctorManager>();
             services.AddScoped<IPatientService, PatientManager>();
             services.AddScoped<IAdminService, AdminManager>();
+        }
+
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            services.AddIdentity<User, IdentityRole>(opts =>
+            {
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireLowercase = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequiredLength = 8;
+                opts.User.RequireUniqueEmail = true;
+
+            }).AddEntityFrameworkStores<RepositoryContext>()
+            .AddDefaultTokenProviders();
         }
     }
 }
