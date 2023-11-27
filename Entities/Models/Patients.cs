@@ -8,6 +8,7 @@ namespace Entities.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [RegularExpression(@"^[0-9]{11}$", ErrorMessage = "PatientTCId must be 11 digits")]
         public ulong PatientTCId { get; set; }
 
         [Required]
