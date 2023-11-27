@@ -32,6 +32,10 @@ namespace Services
             if (!await _roleManager.RoleExistsAsync(userForRegistrationDto.Role))
                 throw new Exception($"Role {userForRegistrationDto.Role} does not exist in the database");
 
+            // check is user exist in db
+            if (await _userManager.FindByNameAsync(userForRegistrationDto.UserName) != null)
+                throw new Exception($"User {userForRegistrationDto.UserName} is already registered");
+
             var user = _mapper.Map<User>(userForRegistrationDto);
 
             var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
