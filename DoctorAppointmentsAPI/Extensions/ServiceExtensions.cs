@@ -20,6 +20,7 @@ namespace DoctorAppointmentsAPI.Extensions
             services.AddScoped<IDoctorService, DoctorManager>();
             services.AddScoped<IPatientService, PatientManager>();
             services.AddScoped<IAdminService, AdminManager>();
+            services.AddScoped<IAuthenticationService, AuthenticationManager>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
