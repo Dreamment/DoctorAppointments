@@ -7,13 +7,13 @@ namespace Entities.DataTransferObjects.Update
     {
         [AllowNull]
         [MaxLength(20)]
-        public string DoctorName { get; set; }
+        public string? DoctorName { get; set; }
 
         [AllowNull]
         [MaxLength(20)]
-        public string DoctorSurname { get; set; }
+        public string? DoctorSurname { get; set; }
 
         [AllowNull]
-        public int DoctorSpecialityId { get; set; }
+        public int? DoctorSpecialityId { get; set; }
     }
 }
