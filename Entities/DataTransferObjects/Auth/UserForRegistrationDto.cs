@@ -2,7 +2,7 @@
 
 namespace Entities.DataTransferObjects.Auth
 {
-    public record UserForRegistrationDto
+    public class UserForRegistrationDto
     {
         [Required]
         public string FirstName { get; init; }
@@ -23,6 +23,6 @@ namespace Entities.DataTransferObjects.Auth
         public string PhoneNumber { get; init; }
 
         [Required]
-        public string Role { get; init; }
+        public string Role { get; set; }
     }
 }
