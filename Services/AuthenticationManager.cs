@@ -32,7 +32,7 @@ namespace Services
             // check is role exist in db
             var roles = await _roleManager.Roles.ToListAsync();
             var normalizedNames = roles.Select(r =>r.NormalizedName).ToList();
-            var role = userForRegistrationDto.Role.ToUpper();
+            var role = userForRegistrationDto.Role.ToUpperInvariant();
             if (!normalizedNames.Contains(role))
                 throw new Exception($"Role {role} does not exist");
             else

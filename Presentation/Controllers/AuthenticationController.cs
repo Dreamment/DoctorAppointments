@@ -37,7 +37,7 @@ namespace Presentation.Controllers
                 }
                 return BadRequest(ModelState);
             }
-            return CreatedAtRoute("GetUser", new { userName = userForRegistrationDto.UserName }, null);
+            return StatusCode(201);
         }
     }
 }
