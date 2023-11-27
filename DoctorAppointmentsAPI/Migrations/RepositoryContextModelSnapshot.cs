@@ -52,7 +52,7 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     b.HasIndex("AppointmentCode");
 
-                    b.ToTable("AppointmentsMedications");
+                    b.ToTable("AppointmentsMedications", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Appointments", b =>
@@ -81,7 +81,7 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     b.HasIndex("PatientTCId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Doctors", b =>
@@ -107,7 +107,7 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     b.HasIndex("DoctorSpecialityId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.DoctorSpecialties", b =>
@@ -124,7 +124,7 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     b.HasKey("DoctorSpecialityId");
 
-                    b.ToTable("DoctorSpecialties");
+                    b.ToTable("DoctorSpecialties", (string)null);
 
                     b.HasData(
                         new
@@ -169,7 +169,7 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     b.HasIndex("PreviousFamilyDoctorCode");
 
-                    b.ToTable("FamilyDoctorChanges");
+                    b.ToTable("FamilyDoctorChanges", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Patients", b =>
@@ -206,7 +206,7 @@ namespace DoctorAppointmentsAPI.Migrations
 
                     b.HasIndex("PatientFamilyDoctorCode");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.AppointmentMedications", b =>
