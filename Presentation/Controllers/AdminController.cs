@@ -48,7 +48,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("PatientTCId/{patientTCId:int}", Name = "GetAppointmentsByPatientTCIdAsync")]
+        [HttpGet("PatientTCId/{patientTCId}", Name = "GetAppointmentsByPatientTCIdAsync")]
         public async Task<IActionResult> GetAppointmentsByPatientTCIdAsync(ulong patientTCId)
         {
             try
@@ -398,7 +398,7 @@ namespace Presentation.Controllers
             try
             {
                 var familyDoctorChanges = await _manager.GetAllFamilyDoctorChangesAsync(false);
-                if (familyDoctorChanges.Count() == 0)
+                if (!familyDoctorChanges.Any())
                     return NotFound("There is no family doctor change.");
                 return Ok(familyDoctorChanges);
             }
@@ -408,7 +408,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("PatientTCId/{PatientTCId:int}", Name = "GetFamilyDoctorChangesPatientTCIdAsync")]
+        [HttpGet("PatientTCId/{PatientTCId}", Name = "GetFamilyDoctorChangesPatientTCIdAsync")]
         public async Task<IActionResult> GetFamilyDoctorChangesPatientTCIdAsync(ulong patientTCId)
         {
             try
@@ -468,7 +468,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("{patientTCId:int}", Name = "GetPatientByPatientTCIdAsync")]
+        [HttpGet("{patientTCId}", Name = "GetPatientByPatientTCIdAsync")]
         public async Task<IActionResult> GetPatientByPatientTCIdAsync(ulong patientTCId)
         {
             try
@@ -500,7 +500,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPut("{patientTCId:int}", Name = "UpdatePatientAsync")]
+        [HttpPut("{patientTCId}", Name = "UpdatePatientAsync")]
         public async Task<IActionResult> UpdatePatientAsync(ulong patientTCId, [FromBody] UpdatePatientDto updatePatientDto)
         {
             try
@@ -516,8 +516,8 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpDelete("{patientTCId:int}", Name = "DeletePatientAsync")]
-        public async Task<IActionResult> DeletePatientAsync(ulong patientTCId)
+        [HttpDelete("{patientTCId}", Name = "DeletePatientAsync")]
+        public async Task<IActionResult> DeletePatientAsync([FromRoute(Name ="patientTCId")]ulong patientTCId)
         {
             try
             {
