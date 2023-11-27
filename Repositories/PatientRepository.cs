@@ -19,8 +19,14 @@ namespace Repositories
         public async Task<IEnumerable<Patients>> GetAllPatientsAsync(bool trackChanges)
             => await FindAllAsync(trackChanges);
 
+        public async Task<IEnumerable<Patients>> GetAllPatientsWithDetailsAsync(bool trackChanges, params Expression<Func<Patients, object>>[] expression)
+            => await FindAllWithDetailsAsync(trackChanges, expression);
+
         public async Task<IEnumerable<Patients>> GetPatientsByConditionAsync(Expression<Func<Patients, bool>> expression, bool trackChanges) 
             => await FindByConditionAsync(expression, trackChanges);
+
+        public async Task<IEnumerable<Patients>> GettPatientsByConditionWithDetailsAsync(Expression<Func<Patients, bool>> expression, bool trackChanges, params Expression<Func<Patients, object>>[] expressionInclude)
+            => await FindByConditionWithDetailsAsync(expression, trackChanges, expressionInclude);
 
         public Task UpdatePatientAsync(Patients patient)
             => UpdateAsync(patient);

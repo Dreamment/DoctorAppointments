@@ -19,8 +19,18 @@ namespace Repositories
         public async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedicationsAsync(bool trackChanges)
             => await FindAllAsync(trackChanges);
 
-        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByConditionAsync(Expression<Func<AppointmentMedications, bool>> expression, bool trackChanges)
+        public async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedicationsWithDetailsAsync(
+            bool trackChanges, params Expression<Func<AppointmentMedications, object>>[] includes)
+            => await FindAllWithDetailsAsync(trackChanges, includes);
+
+        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByConditionAsync(
+            Expression<Func<AppointmentMedications, bool>> expression, bool trackChanges)
             => await FindByConditionAsync(expression, trackChanges);
+
+        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByConditionWithDetailsAsync(
+            Expression<Func<AppointmentMedications, bool>> expression, bool trackChanges, 
+            params Expression<Func<AppointmentMedications, object>>[] includes)
+            => await FindByConditionWithDetailsAsync(expression, trackChanges, includes);
 
         public async Task UpdateAppointmentMedicationAsync(AppointmentMedications appointmentMedication)
             => await UpdateAsync(appointmentMedication);

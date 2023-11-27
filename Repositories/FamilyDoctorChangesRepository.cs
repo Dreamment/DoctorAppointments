@@ -19,8 +19,14 @@ namespace Repositories
         public async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChangesAsync(bool trackChanges)
             => await FindAllAsync(trackChanges);
 
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChangesWithDetailsAsync(bool trackChanges, params Expression<Func<FamilyDoctorChanges, object>>[] includeExpression)
+            => await FindAllWithDetailsAsync(trackChanges, includeExpression);
+
         public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByConditionAsync(Expression<Func<FamilyDoctorChanges, bool>> expression, bool trackChanges)
             => await FindByConditionAsync(expression, trackChanges);
+
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByConditionWithDetailsAsync(Expression<Func<FamilyDoctorChanges, bool>> expression, bool trackChanges, params Expression<Func<FamilyDoctorChanges, object>>[] includeExpression)
+            => await FindByConditionWithDetailsAsync(expression, trackChanges, includeExpression);
 
         public async Task UpdateFamilyDoctorChangeAsync(FamilyDoctorChanges familyDoctorChange)
             => await UpdateAsync(familyDoctorChange);

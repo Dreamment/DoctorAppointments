@@ -20,16 +20,18 @@ namespace Services
 
         // AppointmentMedications
         public async Task<IEnumerable<AppointmentMedications>> GetAllAppointmentMedicationsAsync(bool trackChanges)
-            => await _repositoryManager.AppointmentMedication.GetAllAppointmentMedicationsAsync(trackChanges);
+            => await _repositoryManager.AppointmentMedication.GetAllAppointmentMedicationsWithDetailsAsync(
+                trackChanges, m => m.Appointment);
 
-        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByAppointmentCodeAsync(string appointmentCode, bool trackChanges)
-        => await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
-            m => m.AppointmentCode == appointmentCode, trackChanges);
+        public async Task<IEnumerable<AppointmentMedications>> GetAppointmentMedicationsByAppointmentCodeAsync(
+            string appointmentCode, bool trackChanges)
+        => await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionWithDetailsAsync(
+            m => m.AppointmentCode == appointmentCode, trackChanges, m => m.Appointment);
 
         public async Task<string> CreateAppointmentMedicationAsync(CreateMedicationDto medicationDto, bool trackChanges)
         {
             var appointment = await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
-                a => a.AppointmentCode == medicationDto.AppointmentCode, trackChanges) ?? 
+                a => a.AppointmentCode == medicationDto.AppointmentCode, trackChanges) ??
                 throw new Exception("Appointment not found");
             var medication = _mapper.Map<AppointmentMedications>(medicationDto);
             var existingMedications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
@@ -50,8 +52,8 @@ namespace Services
         }
 
         public async Task UpdateAppointmentMedicationAsync(
-            string medicationCode, 
-            UpdateAppointmentMedicationDto updateAppointmentMedicationDto, 
+            string medicationCode,
+            UpdateAppointmentMedicationDto updateAppointmentMedicationDto,
             bool trackChanges)
         {
             var medications = await _repositoryManager.AppointmentMedication.GetAppointmentMedicationsByConditionAsync(
@@ -64,15 +66,16 @@ namespace Services
 
         // Appointments
         public async Task<IEnumerable<Appointments>> GetAllAppointmentsAsync(bool trackChanges)
-            => await _repositoryManager.Appointment.GetAllAppointmentsAsync(trackChanges);
+            => await _repositoryManager.Appointment.GetAllAppointmentsWithDetailsAsync(trackChanges, 
+                a => a.Patient, a => a.Doctor, a => a.Medications);
 
         public async Task<IEnumerable<Appointments>> GetAppointmentsByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
-            => await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
-                a => a.PatientTCId == patientTCId, trackChanges);
+            => await _repositoryManager.Appointment.GetAppointmentsByConditionWithDetailsAsync(
+                a => a.PatientTCId == patientTCId, trackChanges, a => a.Patient, a => a.Doctor, a => a.Medications);
 
         public async Task<IEnumerable<Appointments>> GetAppointmentsByDoctorCodeAsync(string doctorCode, bool trackChanges)
-            => await _repositoryManager.Appointment.GetAppointmentsByConditionAsync(
-                a => a.DoctorCode == doctorCode, trackChanges);
+            => await _repositoryManager.Appointment.GetAppointmentsByConditionWithDetailsAsync(
+                a => a.DoctorCode == doctorCode, trackChanges, a => a.Patient, a => a.Doctor, a => a.Medications);
 
         public async Task<string> CreateAppointmentAsync(CreateAppointmentDto appointmentDto, bool trackChanges)
         {
@@ -125,12 +128,13 @@ namespace Services
         // Doctors
         // eager loading
         public async Task<IEnumerable<Doctors>> GetAllDoctorsAsync(bool trackChanges)
-            => await _repositoryManager.Doctor.GetAllDoctorsWithDetailsAsync(trackChanges, d => d.DoctorSpeciality, d => d.Appointments);
+            => await _repositoryManager.Doctor.GetAllDoctorsWithDetailsAsync(
+                trackChanges, d => d.DoctorSpeciality, d => d.Appointments);
 
         public async Task<Doctors> GetDoctorByDoctorCodeAsync(string doctorCode, bool trackChanges)
         {
-            var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
-                d => d.DoctorCode == doctorCode, trackChanges);
+            var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionWithDetailsAsync(
+                d => d.DoctorCode == doctorCode, trackChanges, d => d.DoctorSpeciality, d => d.Appointments);
             return doctors.FirstOrDefault();
         }
 
@@ -138,7 +142,7 @@ namespace Services
         public async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
-                ds => ds.DoctorSpecialityId == doctorDto.DoctorSpecialityId, trackChanges) ?? 
+                ds => ds.DoctorSpecialityId == doctorDto.DoctorSpecialityId, trackChanges) ??
                 throw new Exception("DoctorSpecialty not found");
             var doctor = _mapper.Map<Doctors>(doctorDto);
             doctor.DoctorCode = GenerateDoctorCode();
@@ -163,7 +167,7 @@ namespace Services
         public async Task UpdateDoctorAsync(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
-                ds => ds.DoctorSpecialityId == updateDoctorDto.DoctorSpecialityId, trackChanges) ?? 
+                ds => ds.DoctorSpecialityId == updateDoctorDto.DoctorSpecialityId, trackChanges) ??
                 throw new Exception("DoctorSpecialty not found");
             var doctors = await _repositoryManager.Doctor.GetDoctorsByConditionAsync(
                 d => d.DoctorCode == doctorCode, trackChanges);
@@ -222,7 +226,8 @@ namespace Services
             await _repositoryManager.SaveAsync();
         }
 
-        public async Task UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
+        public async Task UpdateDoctorSpecialtyAsync(int doctorSpecialtyId, 
+            UpdateDoctorSpecialtyDto updateDoctorSpecialtyDto, bool trackChanges)
         {
             if (doctorSpecialtyId == 1)
                 throw new Exception("Family Doctor Speacilty cannot be updated");
@@ -238,24 +243,31 @@ namespace Services
 
         // FamilyDoctorChanges
         public async Task<IEnumerable<FamilyDoctorChanges>> GetAllFamilyDoctorChangesAsync(bool trackChanges)
-            => await _repositoryManager.FamilyDoctorChanges.GetAllFamilyDoctorChangesAsync(trackChanges);
+            => await _repositoryManager.FamilyDoctorChanges.GetAllFamilyDoctorChangesWithDetailsAsync(
+                trackChanges, fdc => fdc.Patient, fdc => fdc.PreviousFamilyDoctor, fdc => fdc.NewFamilyDoctor);
 
-        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
-            => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
-                fdc => fdc.PatientTCId == patientTCId, trackChanges);
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByPatientTCIdAsync(
+            ulong patientTCId, bool trackChanges)
+            => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionWithDetailsAsync(
+                fdc => fdc.PatientTCId == patientTCId, trackChanges, 
+                fdc => fdc.Patient, fdc => fdc.PreviousFamilyDoctor, fdc => fdc.NewFamilyDoctor);
 
-        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCodeAsync(string doctorCode, bool trackChanges)
-            => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionAsync(
-                fdc => fdc.NewFamilyDoctorCode == doctorCode || fdc.PreviousFamilyDoctorCode == doctorCode, trackChanges);
+        public async Task<IEnumerable<FamilyDoctorChanges>> GetFamilyDoctorChangesByDoctorCodeAsync(
+            string doctorCode, bool trackChanges)
+            => await _repositoryManager.FamilyDoctorChanges.GetFamilyDoctorChangesByConditionWithDetailsAsync(
+                fdc => fdc.NewFamilyDoctorCode == doctorCode || fdc.PreviousFamilyDoctorCode == doctorCode, trackChanges, 
+                fdc => fdc.Patient, fdc => fdc.PreviousFamilyDoctor, fdc => fdc.NewFamilyDoctor);
 
         // Patients
         public async Task<IEnumerable<Patients>> GetAllPatientsAsync(bool trackChanges)
-            => await _repositoryManager.Patient.GetAllPatientsAsync(trackChanges);
+            => await _repositoryManager.Patient.GetAllPatientsWithDetailsAsync(trackChanges, 
+                p => p.FamilyDoctor, p => p.Appointments, p => p.FamilyDoctorChanges);
 
         public async Task<Patients> GetPatientByPatientTCIdAsync(ulong patientTCId, bool trackChanges)
         {
-            var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
-                p => p.PatientTCId == patientTCId, trackChanges);
+            var patients = await _repositoryManager.Patient.GettPatientsByConditionWithDetailsAsync(
+                p => p.PatientTCId == patientTCId, trackChanges,
+                p => p.FamilyDoctor, p => p.Appointments, p => p.FamilyDoctorChanges);
             return patients.FirstOrDefault() == null ? throw new Exception("Patient not found") : patients.FirstOrDefault();
         }
 

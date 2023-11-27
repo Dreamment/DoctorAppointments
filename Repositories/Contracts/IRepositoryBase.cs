@@ -15,5 +15,8 @@ namespace Repositories.Contracts
         Task UpdateAsync(T entity);
 
         Task<IEnumerable<T>> FindAllWithDetailsAsync(bool trackChanges, params Expression<Func<T, object>>[] includes);
+
+        Task<IEnumerable<T>> FindByConditionWithDetailsAsync(Expression<Func<T, bool>> expression, bool trackChanges, 
+            params Expression<Func<T, object>>[] includes);
     }
 }
