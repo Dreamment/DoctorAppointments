@@ -1,4 +1,5 @@
 ﻿using Entities.DataTransferObjects.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -17,6 +18,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("register")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
         {
             var result = new IdentityResult();
@@ -43,10 +45,17 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto userForAuthenticationDto)
         {
-            var isAuth = await _authenticationManager.ValidateUser(userForAuthenticationDto);
+            bool isAuth;
+            try
+            {
+                isAuth = await _authenticationManager.ValidateUser(userForAuthenticationDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             if (!isAuth)
                 return Unauthorized();
-
             var token = await _authenticationManager.CreateToken();
             return Ok(new { Token = token });
         }

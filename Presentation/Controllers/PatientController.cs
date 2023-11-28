@@ -1,11 +1,13 @@
 ﻿using Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Entities.DataTransferObjects.Create;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoctorAppointmentsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Patient")]
     public class PatientController : ControllerBase
     {
         private readonly IPatientService _manager;
@@ -15,7 +17,7 @@ namespace DoctorAppointmentsAPI.Controllers
             _manager = manager;
         }
 
-        [HttpGet("Appointments/{patientId:int}", Name = "GetAppointments")]
+        [HttpGet("Appointments/{patientId}", Name = "GetAppointments")]
         public async Task<IActionResult> GetAppointmentsAsync([FromRoute(Name = "patientId")] ulong patientId)
         {
             var appointments = await _manager.GetAppointmentsForPatientAsync(patientId, false);
@@ -24,7 +26,7 @@ namespace DoctorAppointmentsAPI.Controllers
             return Ok(appointments);
         }
 
-        [HttpGet("FamilyDoctor/{patientId:int}", Name = "GetFamilyDoctor")]
+        [HttpGet("FamilyDoctor/{patientId}", Name = "GetFamilyDoctor")]
         public async Task<IActionResult> GetFamilyDoctorAsync([FromRoute(Name = "patientId")] ulong patientId)
         {
             var familyDoctor = await _manager.GetFamilyDoctorAsync(patientId, false);
@@ -33,7 +35,7 @@ namespace DoctorAppointmentsAPI.Controllers
             return Ok(familyDoctor);
         }
 
-        [HttpGet("Medications/{patientId:int}/{appointmentCode}", Name = "GetMedications")]
+        [HttpGet("Medications/{patientId}/{appointmentCode}", Name = "GetMedications")]
         public async Task<IActionResult> GetMedicationsAsync([FromRoute(Name = "patientId")] ulong patientId, [FromRoute(Name = "appointmentCode")] string appointmentCode)
         {
             var medications = await _manager.GetMedicationsForAppointmentAsync(patientId, appointmentCode, false);

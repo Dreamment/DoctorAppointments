@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Entities.DataTransferObjects.Create;
 using Entities.DataTransferObjects.Update;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoctorAppointmentsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Doctor")]
     public class DoctorController : Controller
     {
         private readonly IDoctorService _manager;
