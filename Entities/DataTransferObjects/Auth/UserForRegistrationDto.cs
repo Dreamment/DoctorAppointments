@@ -5,22 +5,22 @@ namespace Entities.DataTransferObjects.Auth
     public class UserForRegistrationDto
     {
         [Required]
-        public string Name { get; init; }
+        public string Name { get; set; }
 
         [Required]
-        public string Surname { get; init; }
+        public string Surname { get; set; }
 
         [Required]
-        public string UserName { get; init; }
+        public string UserName { get; set; }
 
         [Required]
-        public string Password { get; init; }
+        public string Password { get; set; }
 
         [Required]
-        public string Email { get; init; }
+        public string Email { get; set; }
 
         [Required]
-        public string PhoneNumber { get; init; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string Role { get; set; }
