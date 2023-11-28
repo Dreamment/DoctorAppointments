@@ -30,6 +30,9 @@ namespace DoctorAppointmentsAPI.AutoMapper
             CreateMap<CreatePatientDto, Patients>();
             CreateMap<UpdatePatientDto, Patients>();
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<UserForAuthenticationDto, User>();
+            CreateMap<UserForPatientRegistrationDto, UserForRegistrationDto>().ReverseMap();
+            CreateMap<UserForDoctorRegistrationDto, UserForRegistrationDto>().ReverseMap();
         }
     }
 }
