@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories;
 
@@ -11,9 +12,10 @@ using Repositories;
 namespace DoctorAppointmentsAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231127210750_AddRolesToDatabase")]
+    partial class AddRolesToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,27 +282,6 @@ namespace DoctorAppointmentsAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "18dd2552-17ae-4bdb-9621-6061e1308bd4",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a506bc1-c149-4a55-b107-a6508f060690",
-                            Email = "admin@admin.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = true,
-                            Name = "admin",
-                            NormalizedEmail = "ADMIN@ADMIN.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK1UJlTVFUSnIG7wzErpGrmGlG8/+UwZiCkLEhu8cP+XpYYMznxyZc2sVPsFN3Aytw==",
-                            PhoneNumber = "admin",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "7ce22d4e-cc48-474c-8a20-e5165fd928b9",
-                            Surname = "admin",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -333,21 +314,21 @@ namespace DoctorAppointmentsAPI.Migrations
                         new
                         {
                             Id = "359ce375-376c-42b6-b52e-a02b48e116a3",
-                            ConcurrencyStamp = "cd0157b8-5c8d-407e-b13e-97344b7b3144",
+                            ConcurrencyStamp = "15fc8678-cd60-405a-bb86-063c67572e56",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "8203b0fd-a012-4f37-a2fc-30b977a94518",
-                            ConcurrencyStamp = "1cd8d92e-f1e3-47f4-b6d8-04d459e43c89",
+                            ConcurrencyStamp = "fcc2c8ad-7aa1-4cb8-931c-515d14f480ff",
                             Name = "Doctor",
                             NormalizedName = "DOCTOR"
                         },
                         new
                         {
                             Id = "8f416413-0a82-477c-a646-43f1ba04715b",
-                            ConcurrencyStamp = "122a8b64-391a-4377-bc5d-cb357aebcfa0",
+                            ConcurrencyStamp = "ae43ff93-a979-4898-a527-f1b2685f395f",
                             Name = "Patient",
                             NormalizedName = "PATIENT"
                         });
@@ -438,13 +419,6 @@ namespace DoctorAppointmentsAPI.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "18dd2552-17ae-4bdb-9621-6061e1308bd4",
-                            RoleId = "359ce375-376c-42b6-b52e-a02b48e116a3"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

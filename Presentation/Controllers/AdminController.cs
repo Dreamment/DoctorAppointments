@@ -1,5 +1,7 @@
-﻿using Entities.DataTransferObjects.Create;
+﻿using Entities.DataTransferObjects.Auth;
+using Entities.DataTransferObjects.Create;
 using Entities.DataTransferObjects.Update;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
@@ -7,6 +9,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminAppointmentController : Controller
     {
         private readonly IAdminService _manager;
@@ -113,6 +116,7 @@ namespace Presentation.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminMedicationController : Controller
     {
         private readonly IAdminService _manager;
@@ -203,13 +207,16 @@ namespace Presentation.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminDoctorController : Controller
     {
         private readonly IAdminService _manager;
+        private readonly IAuthenticationService _authenticationManager;
 
-        public AdminDoctorController(IAdminService manager)
+        public AdminDoctorController(IAdminService manager, IAuthenticationService authenticationManager)
         {
             _manager = manager;
+            _authenticationManager = authenticationManager;
         }
 
         [HttpGet(Name = "GetAllDoctorsAsync")]
@@ -245,13 +252,20 @@ namespace Presentation.Controllers
         }
 
         [HttpPost(Name = "CreateDoctorAsync")]
-        public async Task<IActionResult> CreateDoctorAsync([FromBody] CreateDoctorDto doctorDto)
+        public async Task<IActionResult> CreateDoctorAsync([FromBody] CreateDoctorDto doctorDto,
+            [FromQuery] string password, [FromQuery] string email, [FromQuery] string phoneNumber)
         {
             try
             {
-                if (doctorDto == null)
-                    return BadRequest("Doctor is null.");
-                var doctorCode = await _manager.CreateDoctorAsync(doctorDto, false);
+                if (doctorDto == null || password == null || email == null || phoneNumber == null)
+                    return BadRequest("Doctor or registration informations is null.");
+                var userForDoctorRegistrationDto = new UserForDoctorRegistrationDto
+                {
+                    Password = password,
+                    Email = email,
+                    PhoneNumber = phoneNumber
+                };
+                var doctorCode = await _manager.CreateDoctorAsync(doctorDto, userForDoctorRegistrationDto, false);
                 return CreatedAtRoute("GetAllDoctorsAsync", new { doctorCode }, doctorCode);
             }
             catch (Exception e)
@@ -293,6 +307,7 @@ namespace Presentation.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminDoctorSpecialtyController : Controller
     {
         private readonly IAdminService _manager;
@@ -383,6 +398,7 @@ namespace Presentation.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminFamilyDoctorChangesController : Controller
     {
         private readonly IAdminService _manager;
@@ -443,6 +459,7 @@ namespace Presentation.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminPatientController : Controller
     {
         private readonly IAdminService _manager;
@@ -485,13 +502,20 @@ namespace Presentation.Controllers
         }
 
         [HttpPost(Name = "CreatePatientAsync")]
-        public async Task<IActionResult> CreatePatientAsync([FromBody] CreatePatientDto patientDto)
+        public async Task<IActionResult> CreatePatientAsync([FromBody] CreatePatientDto patientDto,
+            [FromQuery] string password, [FromQuery] string email, [FromQuery] string phoneNumber)
         {
             try
             {
-                if (patientDto == null)
-                    return BadRequest("Patient is null.");
-                await _manager.CreatePatientAsync(patientDto, false);
+                if (patientDto == null || password == null || email == null || phoneNumber == null)
+                    return BadRequest("Patient or registration informations is null.");
+                var userForPatientRegistrationDto = new UserForPatientRegistrationDto
+                {
+                    Password = password,
+                    Email = email,
+                    PhoneNumber = phoneNumber
+                };
+                await _manager.CreatePatientAsync(patientDto, userForPatientRegistrationDto, false);
                 return NoContent();
             }
             catch (Exception e)
@@ -517,7 +541,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{patientTCId}", Name = "DeletePatientAsync")]
-        public async Task<IActionResult> DeletePatientAsync([FromRoute(Name ="patientTCId")]ulong patientTCId)
+        public async Task<IActionResult> DeletePatientAsync([FromRoute(Name = "patientTCId")] ulong patientTCId)
         {
             try
             {

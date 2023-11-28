@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Entities.DataTransferObjects.Auth;
 using Entities.DataTransferObjects.Create;
 using Entities.DataTransferObjects.Update;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -11,11 +13,13 @@ namespace Services
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AdminManager(IRepositoryManager repositoryManager, IMapper mapper)
+        public AdminManager(IRepositoryManager repositoryManager, IMapper mapper, IAuthenticationService authenticationService)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _authenticationService = authenticationService;
         }
 
         // AppointmentMedications
@@ -219,7 +223,7 @@ namespace Services
             return doctors.FirstOrDefault();
         }
 
-        public async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges)
+        public async Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, UserForDoctorRegistrationDto userForRegistrationDto, bool trackChanges)
         {
             var doctorSpecialties = await _repositoryManager.DoctorSpeciality.GetDoctorSpecialtiesByConditionAsync(
                 ds => ds.DoctorSpecialityId == doctorDto.DoctorSpecialityId, trackChanges) ??
@@ -234,6 +238,13 @@ namespace Services
             try
             {
                 await _repositoryManager.SaveAsync();
+                var result = _authenticationService.RegisterDoctor(userForRegistrationDto, doctor);
+                if (!result.Result.Succeeded)
+                {
+                    await _repositoryManager.Doctor.DeleteDoctorAsync(doctor);
+                    await _repositoryManager.SaveAsync();
+                    throw new Exception("Doctor registration failed");
+                }
             }
             catch (Exception e)
             {
@@ -516,9 +527,20 @@ namespace Services
             return patients.FirstOrDefault() == null ? throw new Exception("Patient not found") : patients.FirstOrDefault();
         }
 
-        public async Task CreatePatientAsync(CreatePatientDto patientDto, bool trackChanges)
+        public async Task CreatePatientAsync(CreatePatientDto patientDto, 
+            UserForPatientRegistrationDto userForPatientRegistrationDto, bool trackChanges)
         {
             DateTime dateNow = DateTime.Now;
+            
+            while (true)
+            {
+                var patients = await _repositoryManager.Patient.GetPatientsByConditionAsync(
+                    p => p.PatientTCId == patientDto.PatientTCId, trackChanges);
+                if (patients.Any())
+                    throw new Exception("Patient already exist");
+                break;
+            }
+
             var patient = _mapper.Map<Patients>(patientDto);
             if (patient.PatientFamilyDoctorCode != null)
             {
@@ -542,6 +564,13 @@ namespace Services
             try
             {
                 await _repositoryManager.SaveAsync();
+                IdentityResult result = await _authenticationService.RegisterPatient(userForPatientRegistrationDto, patient);
+                if (!result.Succeeded)
+                {
+                    await _repositoryManager.Patient.DeletePatientAsync(patient);
+                    await _repositoryManager.SaveAsync();
+                    throw new Exception("Patient registration failed");
+                }
             }
             catch (Exception e)
             {
