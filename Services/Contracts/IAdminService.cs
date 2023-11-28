@@ -1,4 +1,5 @@
-﻿using Entities.DataTransferObjects.Create;
+﻿using Entities.DataTransferObjects.Auth;
+using Entities.DataTransferObjects.Create;
 using Entities.DataTransferObjects.Update;
 using Entities.Models;
 
@@ -24,7 +25,7 @@ namespace Services.Contracts
         // Doctors
         Task<IEnumerable<Doctors>> GetAllDoctorsAsync(bool trackChanges);
         Task<Doctors> GetDoctorByDoctorCodeAsync(string doctorCode, bool trackChanges);
-        Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, bool trackChanges);
+        Task<string> CreateDoctorAsync(CreateDoctorDto doctorDto, UserForDoctorRegistrationDto userForRegistrationDto, bool trackChanges);
         Task DeleteDoctorAsync(string doctorCode, bool trackChanges);
         Task UpdateDoctorAsync(string doctorCode, UpdateDoctorDto updateDoctorDto, bool trackChanges);
 
@@ -44,7 +45,7 @@ namespace Services.Contracts
 
         Task<IEnumerable<Patients>> GetAllPatientsAsync(bool trackChanges);
         Task<Patients> GetPatientByPatientTCIdAsync(ulong patientTCId, bool trackChanges);
-        Task CreatePatientAsync(CreatePatientDto patientDto, bool trackChanges);
+        Task CreatePatientAsync(CreatePatientDto patientDto, UserForPatientRegistrationDto userForPatientRegistrationDto, bool trackChanges);
         Task DeletePatientAsync(ulong patientTCId, bool trackChanges);
         Task UpdatePatientAsync(ulong patientTCId, UpdatePatientDto updatePatientDto, bool trackChanges);
     }

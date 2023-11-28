@@ -64,6 +64,27 @@ namespace Services
             return result;
         }
 
+        public async Task<IdentityResult> RegisterDoctor(UserForDoctorRegistrationDto userForDoctorRegistrationDto, Doctors doctor)
+        {
+            var userForRegistrationDto = _mapper.Map<UserForRegistrationDto>(userForDoctorRegistrationDto);
+            userForRegistrationDto.Role = "Doctor";
+            userForRegistrationDto.UserName = doctor.DoctorCode;
+            userForRegistrationDto.Name = doctor.DoctorName;
+            userForRegistrationDto.Surname = doctor.DoctorSurname;
+            var result = await RegisterUser(userForRegistrationDto);
+            return result;
+        }
+        public async Task<IdentityResult> RegisterPatient(UserForPatientRegistrationDto userForPatientRegistrationDto, Patients patient)
+        {
+            var userForRegistrationDto = _mapper.Map<UserForRegistrationDto>(userForPatientRegistrationDto);
+            userForRegistrationDto.Role = "Patient";
+            userForRegistrationDto.UserName = patient.PatientTCId.ToString();
+            userForRegistrationDto.Name = patient.PatientName;
+            userForRegistrationDto.Surname = patient.PatientSurname;
+            var result = await RegisterUser(userForRegistrationDto);
+            return result;
+        }
+
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)
         {
             _user = await _userManager.FindByNameAsync(userForAuthenticationDto.Username);
